@@ -38,15 +38,31 @@ namespace IcMusicPlayer.Editors
         /// 是否富文本支持 key
         /// </summary>
         public const string Uguiexisrich_Bool = "UGUIExIsRich";
-            
+
+
+
+        #region Language Var
+
+        
+        private static string _notFindMaterial  = "设置的默认材质找不到了";
+        private static string _notSprite = "设置的默认Sprite找不到了";
+        private static string _titile = "UGUI 设置";
+        private static string _selectDefaultMaterialLabel = "选择默认材质:";
+        private static string _selectDefaultSpriteLabel = "选择默认Sprite";
+        private static string _isRayCshTargetLabel = "是射线目标(Button,Toogle等带交互的无视该参数),默认为false";
+        private static string _isOpenRich = "开启富文本支持,默认为false";
+        private static string _optimizeWarning = "没有设置{0},Unity会在运行时给予默认值,会产生效率问题,建议手动选择,避免发生运行时赋值,点击定位物体";
+        private static string _notFindAssetError = "{0},路径是:{1}";
+        #endregion
+
         public static Material GetDefalutMaterial(GameObject go)
         {
-            return _loadAsset<Material>(Uguiexdefaultmaterialpath_String, "设置的默认材质找不到了",go);
+            return _loadAsset<Material>(Uguiexdefaultmaterialpath_String, _notFindMaterial,go);
         }
 
         public static Sprite GetDefalutSprite(GameObject go)
         {
-            return _loadAsset<Sprite>(Uguiexdefaultspritepath_String, "设置的默认Sprite找不到了",go);
+            return _loadAsset<Sprite>(Uguiexdefaultspritepath_String, _notSprite,go);
         }
 
         private static T _loadAsset<T>(string key, string errorMessage = null,GameObject go = null) where T : Object
@@ -59,12 +75,12 @@ namespace IcMusicPlayer.Editors
             {
                 if (string.IsNullOrEmpty(path))
                 {
-                    Debug.LogWarning($"没有设置{typeof(T).Name},Unity会在运行时给予默认值,会产生效率问题,建议手动选择,避免发生运行时赋值,点击定位物体",go);   
+                    Debug.LogWarningFormat(_optimizeWarning,typeof(T).Name,go);   
                 }
                 
                 if (!string.IsNullOrEmpty(errorMessage) && !string.IsNullOrEmpty(path))
                 {
-                    Debug.LogError($"{errorMessage},路径是:{path}");
+                    Debug.LogErrorFormat(_notFindAssetError,errorMessage,path);
                 }
             }
 
@@ -78,9 +94,7 @@ namespace IcMusicPlayer.Editors
         [MenuItem("Tools/UGUI/Settings")]
         static void _uGUISetting()
         {
-            var win = GetWindow<CustomizeUGUICreate>(true, "UGUI 设置");
-
-            win.titleContent = new GUIContent("UGUI 设置");
+            var win = GetWindow<CustomizeUGUICreate>(true, _titile);
 
             win.Show();
         }
@@ -121,6 +135,7 @@ namespace IcMusicPlayer.Editors
         private Sprite _sprite;
         private bool _isRayCastTarget,_isRich;
 
+
         private void Awake()
         {
             _material = _loadAsset<Material>(Uguiexdefaultmaterialpath_String);
@@ -133,7 +148,7 @@ namespace IcMusicPlayer.Editors
         {
             EditorGUILayout.BeginHorizontal();
             {
-                EditorGUILayout.LabelField("选择默认材质:");
+                EditorGUILayout.LabelField(_selectDefaultMaterialLabel);
 
                 _material = (Material) EditorGUILayout.ObjectField(_material, typeof(Material), false);
             }
@@ -141,15 +156,15 @@ namespace IcMusicPlayer.Editors
 
             EditorGUILayout.BeginHorizontal();
             {
-                EditorGUILayout.LabelField("选择默认Sprite:");
+                EditorGUILayout.LabelField(_selectDefaultSpriteLabel);
 
                 _sprite = (Sprite) EditorGUILayout.ObjectField(_sprite, typeof(Sprite), false);
             }
             EditorGUILayout.EndHorizontal();
 
-            _isRayCastTarget = EditorGUILayout.ToggleLeft("是射线目标(Button,Toogle等带交互的无视该参数),默认为false", _isRayCastTarget);
+            _isRayCastTarget = EditorGUILayout.ToggleLeft(_isRayCshTargetLabel, _isRayCastTarget);
             
-            _isRich = EditorGUILayout.ToggleLeft("关闭富文本支持,默认为false", _isRich);
+            _isRich = EditorGUILayout.ToggleLeft(_isOpenRich, _isRich);
             
             _setDefaultMaterial(_material);
             _setDefaultSprite(_sprite);
