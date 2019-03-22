@@ -44,15 +44,15 @@ namespace IcMusicPlayer.Editors
         #region Language Var
 
         
-        private static string _notFindMaterial  = "设置的默认材质找不到了";
-        private static string _notSprite = "设置的默认Sprite找不到了";
-        private static string _titile = "UGUI 设置";
-        private static string _selectDefaultMaterialLabel = "选择默认材质:";
-        private static string _selectDefaultSpriteLabel = "选择默认Sprite";
-        private static string _isRayCshTargetLabel = "是射线目标(Button,Toogle等带交互的无视该参数),默认为false";
-        private static string _isOpenRich = "开启富文本支持,默认为false";
-        private static string _optimizeWarning = "没有设置{0},Unity会在运行时给予默认值,会产生效率问题,建议手动选择,避免发生运行时赋值,点击定位物体";
-        private static string _notFindAssetError = "{0},路径是:{1}";
+        private static string _notFindMaterial  = "The set Material could not be found";
+        private static string _notSprite = "The set Sprite could not be found";
+        private static string _titile = "UGUI Settings";
+        private static string _selectDefaultMaterialLabel = "Set Default Material:";
+        private static string _selectDefaultSpriteLabel = "Set Default Sprite";
+        private static string _isRayCshTargetLabel = "Open RayCastTarget(Interactive elements are not affected) Default Value: false";
+        private static string _isOpenRich = "Open Rich Support,Default Value: false";
+        private static string _optimizeWarning = "If {0} is not set, Unity will set the default value at runtime, which will cause efficiency problems. It is recommended to manually select to avoid runtime assignment. Click to locate the object.";
+        private static string _notFindAssetError = "{0},Path:{1}";
         #endregion
 
         public static Material GetDefalutMaterial(GameObject go)
