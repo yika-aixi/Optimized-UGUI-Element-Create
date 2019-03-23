@@ -39,11 +39,7 @@ namespace IcMusicPlayer.Editors
         /// </summary>
         public const string Uguiexisrich_Bool = "UGUIExIsRich";
 
-
-
         #region Language Var
-
-        
         private static string _notFindMaterial  = "The set Material could not be found";
         private static string _notSprite = "The set Sprite could not be found";
         private static string _titile = "UGUI Settings";
@@ -55,6 +51,7 @@ namespace IcMusicPlayer.Editors
         private static string _notFindAssetError = "{0},Path:{1}";
         #endregion
 
+        
         public static Material GetDefalutMaterial(GameObject go)
         {
             return _loadAsset<Material>(Uguiexdefaultmaterialpath_String, _notFindMaterial,go);
@@ -75,7 +72,8 @@ namespace IcMusicPlayer.Editors
             {
                 if (string.IsNullOrEmpty(path))
                 {
-                    Debug.LogWarningFormat(_optimizeWarning,typeof(T).Name,go);   
+                    if(typeof(T) == typeof(Material))
+                        Debug.LogWarningFormat(_optimizeWarning,typeof(T).Name,go);   
                 }
                 
                 if (!string.IsNullOrEmpty(errorMessage) && !string.IsNullOrEmpty(path))
