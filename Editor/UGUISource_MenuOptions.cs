@@ -309,25 +309,6 @@ namespace IcMusicPlayer.Editors
 
             goImage.material = CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) : goImage.material;
         }
-//
-//        // Containers
-//
-//        [MenuItem("GameObject/UI/Canvas", false, -2060)]
-//        static public void AddCanvas(MenuCommand menuCommand)
-//        {
-//            var go = CreateNewUI();
-//            GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
-//            if (go.transform.parent as RectTransform)
-//            {
-//                RectTransform rect = go.transform as RectTransform;
-//                rect.anchorMin = Vector2.zero;
-//                rect.anchorMax = Vector2.one;
-//                rect.anchoredPosition = Vector2.zero;
-//                rect.sizeDelta = Vector2.zero;
-//            }
-//
-//            Selection.activeGameObject = go;
-//        }
 
         [MenuItem("GameObject/UI/New Panel", false, -2061)]
         static public void AddPanel(MenuCommand menuCommand)
@@ -386,13 +367,6 @@ namespace IcMusicPlayer.Editors
             // if there is no event system add one...
             CreateEventSystem(false);
             return root;
-        }
-
-        [MenuItem("GameObject/UI/Event System", false, 2100)]
-        public static void CreateEventSystem(MenuCommand menuCommand)
-        {
-            GameObject parent = menuCommand.context as GameObject;
-            CreateEventSystem(true, parent);
         }
 
         private static void CreateEventSystem(bool select)

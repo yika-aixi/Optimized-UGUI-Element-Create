@@ -89,7 +89,7 @@ namespace IcMusicPlayer.Editors
         
         public static bool IsRich => EditorPrefs.GetBool(Uguiexisrich_Bool);
 
-        [MenuItem("Icarus/Tools/UGUI/Settings")]
+        [MenuItem("Icarus/UGUI/Optimized Element Setting",false,33)]
         static void _uGUISetting()
         {
             var win = GetWindow<CustomizeUGUICreate>(true, _titile);
