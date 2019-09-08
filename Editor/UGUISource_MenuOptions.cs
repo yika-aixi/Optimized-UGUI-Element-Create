@@ -203,7 +203,8 @@ namespace IcMusicPlayer.Editors
             
             Background.sprite = CustomizeUGUICreate.GetDefalutSprite(Background.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Background.gameObject) : Background.sprite;
             Background.material = CustomizeUGUICreate.GetDefalutMaterial(Background.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Background.gameObject) : Background.material;
-
+            Background.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
+            
             Fill.sprite = CustomizeUGUICreate.GetDefalutSprite(Fill.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Fill.gameObject) : Fill.sprite;
             Fill.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             Fill.material = CustomizeUGUICreate.GetDefalutMaterial(Fill.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Fill.gameObject) : Fill.material;
@@ -333,12 +334,39 @@ namespace IcMusicPlayer.Editors
             GameObject go = DefaultControls.CreateScrollView(GetStandardResources());
             PlaceUIElementRoot(go, menuCommand);
 
-            var Viewport = go.transform.Find("Viewport").GetComponent<Image>();
+            var viewport = go.transform.Find("Viewport").gameObject;
 
-            Viewport.sprite = CustomizeUGUICreate.GetDefalutSprite(Viewport.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Viewport.gameObject) : Viewport.sprite;
+            if (CustomizeUGUICreate.NoToRectMask)
+            {
+                var viewportImage = viewport.GetComponent<Image>();
 
-            Viewport.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Viewport.material = CustomizeUGUICreate.GetDefalutMaterial(Viewport.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Viewport.gameObject) : Viewport.material;
+                Sprite sprite = CustomizeUGUICreate.GetDefalutSprite(viewport);
+
+                if (!sprite)
+                {
+                    sprite = viewportImage.sprite;
+                }
+
+                viewportImage.sprite = sprite;
+                viewportImage.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
+
+                Material material = CustomizeUGUICreate.GetDefalutMaterial(viewport.gameObject);
+
+                if (!material)
+                {
+                    material = viewportImage.material;
+                }
+
+                viewportImage.material = material;
+
+            }
+            else
+            {
+                Object.DestroyImmediate(viewport.GetComponent<Image>());
+                Object.DestroyImmediate(viewport.GetComponent<Mask>());
+                viewport.AddComponent<RectMask2D>();
+            }
+
 
             var goImage = go.GetComponent<Image>();
 

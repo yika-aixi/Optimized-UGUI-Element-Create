@@ -7,6 +7,9 @@
 
 using System;
 using System.IO;
+using CabinIcarus.EditorFrame.Base.Editor;
+using CabinIcarus.EditorFrame.Config;
+using CabinIcarus.EditorFrame.Utils;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,6 +36,11 @@ namespace IcMusicPlayer.Editors
         /// 是否是射线目标 Key
         /// </summary>
         public const string Uguiexisraycasttarget_Bool = "UGUIExIsRayCastTarget";
+        
+        /// <summary>
+        /// 滚动视图Mask转RectMask Key
+        /// </summary>
+        public const string DoNotMaskToRectMask_Bool = "ScrollViewViewportMaskToRectMask";
 
         /// <summary>
         /// 是否富文本支持 key
@@ -49,6 +57,7 @@ namespace IcMusicPlayer.Editors
         private static string _isOpenRich = "Open Rich Support,Default Value: false";
         private static string _optimizeWarning = "If {0} is not set, Unity will set the default value at runtime, which will cause efficiency problems. It is recommended to manually select to avoid runtime assignment. Click to locate the object.";
         private static string _notFindAssetError = "{0},Path:{1}";
+        private static string _doNotMaskToRectMask = "Mask Do not to RectMask";
         #endregion
 
         
@@ -64,7 +73,7 @@ namespace IcMusicPlayer.Editors
 
         private static T _loadAsset<T>(string key, string errorMessage = null,GameObject go = null) where T : Object
         {
-            var path = EditorPrefs.GetString(key);
+            var path = Cfg.CSVEncrypting.GetValue<string>(key);
 
             var asset = AssetDatabase.LoadAssetAtPath<T>(path);
 
@@ -85,9 +94,11 @@ namespace IcMusicPlayer.Editors
             return asset;
         }
 
-        public static bool IsRayCastTarget => EditorPrefs.GetBool(Uguiexisraycasttarget_Bool);
+        public static bool IsRayCastTarget => Cfg.CSVEncrypting.GetValue<bool>(Uguiexisraycasttarget_Bool);
         
-        public static bool IsRich => EditorPrefs.GetBool(Uguiexisrich_Bool);
+        public static bool IsRich => Cfg.CSVEncrypting.GetValue<bool>(Uguiexisrich_Bool);
+        
+        public static bool NoToRectMask => Cfg.CSVEncrypting.GetValue<bool>(DoNotMaskToRectMask_Bool);
 
         [MenuItem("Icarus/UGUI/Optimized Element Setting",false,33)]
         static void _uGUISetting()
@@ -99,15 +110,15 @@ namespace IcMusicPlayer.Editors
 
         static void _setDefaultMaterial(Material material)
         {
-            _setAssetPathToEditorPrefsString(material, Uguiexdefaultmaterialpath_String);
+            _saveObjectPathToCfg(material, Uguiexdefaultmaterialpath_String);
         }
 
         static void _setDefaultSprite(Sprite sprite)
         {
-            _setAssetPathToEditorPrefsString(sprite, Uguiexdefaultspritepath_String);
+            _saveObjectPathToCfg(sprite, Uguiexdefaultspritepath_String);
         }
 
-        static void _setAssetPathToEditorPrefsString<T>(T asset, string key) where T : Object
+        static void _saveObjectPathToCfg<T>(T asset, string key) where T : Object
         {
             string path = string.Empty;
 
@@ -116,22 +127,22 @@ namespace IcMusicPlayer.Editors
                 path = AssetDatabase.GetAssetPath(asset);
             }
             
-            EditorPrefs.SetString(key, path);
+            Cfg.CSVEncrypting.SetValue(key, path);
         }
 
         static void _setRayCastEnableState(bool enable)
         {
-            EditorPrefs.SetBool(Uguiexisraycasttarget_Bool, enable);
+            Cfg.CSVEncrypting.SetValue(Uguiexisraycasttarget_Bool, enable);
         }
         
         static void _setRichEnableState(bool enable)
         {
-            EditorPrefs.SetBool(Uguiexisrich_Bool, enable);
+            Cfg.CSVEncrypting.SetValue(Uguiexisrich_Bool, enable);
         }
 
         private Material _material;
         private Sprite _sprite;
-        private bool _isRayCastTarget,_isRich;
+        private bool _isRayCastTarget,_isRich,_donotMaskToRMask;
 
 
         private void Awake()
@@ -164,10 +175,13 @@ namespace IcMusicPlayer.Editors
             
             _isRich = EditorGUILayout.ToggleLeft(_isOpenRich, _isRich);
             
+            _donotMaskToRMask = EditorGUILayout.ToggleLeft(_doNotMaskToRectMask, _donotMaskToRMask);
+            
             _setDefaultMaterial(_material);
             _setDefaultSprite(_sprite);
             _setRayCastEnableState(_isRayCastTarget);
             _setRichEnableState(_isRich);
+            Cfg.CSVEncrypting.SetValue(DoNotMaskToRectMask_Bool, _donotMaskToRMask);
             
 //            if (GUILayout.Button("复制 Unity 默认 Sprite 到项目"))
 //            {
