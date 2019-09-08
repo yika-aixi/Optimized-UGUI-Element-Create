@@ -20,7 +20,7 @@ namespace IcMusicPlayer.Editors
     /// <summary>
     /// ugui 创建工具扩展
     /// </summary>
-    public class CustomizeUGUICreate : EditorWindow
+    public class CustomizeUGUICreate : LocalizationEditorWindow
     {
         /// <summary>
         /// 默认材质路径 Key
@@ -155,6 +155,12 @@ namespace IcMusicPlayer.Editors
 
         private void OnGUI()
         {
+            DrawLocalizationSelect();
+            
+            EditorGUILayout.Space();
+            EditorGUILayoutUtil.DrawUILine(Color.cyan,width: position.width);
+            EditorGUILayout.Space();
+            
             EditorGUILayout.BeginHorizontal();
             {
                 EditorGUILayout.LabelField(_selectDefaultMaterialLabel);
