@@ -1,0 +1,11 @@
+ChineseSimplified
+NotFindMaterial	没有找到设置得默认材质
+NotSprite	没有找到设置的默认Sprite
+SetDefaultMaterial	默认材质
+SetDefaultSprite	默认Sprite
+OpenRayCastTarget	开启射线目标(交互元素不受影响)
+OpenRich	开启富文本支持
+OptimizeWarning	如果没有设置默认材质,Unity会在运行时给予默认材质,建议手动设置一个
+NotFindAsset	{0},路径:{1}
+DoNotMaskToRectMask	Mask不要转RectMask
+OptimizedElementSettingWindowTitle	优化UGUI元素设置

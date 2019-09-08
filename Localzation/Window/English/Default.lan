@@ -1,0 +1,11 @@
+English
+NotFindMaterial	The set Material could not be found
+NotSprite	The set Sprite could not be found
+SetDefaultMaterial	Set Default Material:
+SetDefaultSprite	Set Default Sprite:
+OpenRayCastTarget	Open RayCastTarget(Interactive elements are not affected) Default Value: false
+OpenRich	Open Rich Support,Default Value: false
+OptimizeWarning	If {0} is not set, Unity will set the default value at runtime, which will cause efficiency problems. It is recommended to manually select to avoid runtime assignment. Click to locate the object.
+NotFindAsset	{0},Path:{1}
+DoNotMaskToRectMask	Mask Do not to RectMask
+OptimizedElementSettingWindowTitle	Optimized Element Setting
