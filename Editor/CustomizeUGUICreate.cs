@@ -7,8 +7,10 @@
 
 using System;
 using System.IO;
+using CabinIcarus.EditorFrame.Attributes;
 using CabinIcarus.EditorFrame.Base.Editor;
 using CabinIcarus.EditorFrame.Config;
+using CabinIcarus.EditorFrame.Localization;
 using CabinIcarus.EditorFrame.Utils;
 using UnityEditor;
 using UnityEngine;
@@ -17,11 +19,29 @@ using Object = UnityEngine.Object;
 
 namespace IcMusicPlayer.Editors
 {
+    [InitializeOnRun(-1)]
+    static class Init
+    {
+        static Init()
+        {
+            EditorApplication.update += _loadLanguage;
+        }
+
+        private static void _loadLanguage()
+        {
+            LocalizationManager.Instance.LoadCsvLanguageConfig(PathUtil.GetDataPathCombinePath("Cabin Icarus/Optimized_UGUI/Optimized-UGUI-Element-Create/Localzation/Window")
+                ,1);
+            
+            EditorApplication.update -= _loadLanguage;
+        }
+    }
+    
     /// <summary>
     /// ugui 创建工具扩展
     /// </summary>
     public class CustomizeUGUICreate : LocalizationEditorWindow
     {
+        
         /// <summary>
         /// 默认材质路径 Key
         /// </summary>
@@ -48,16 +68,16 @@ namespace IcMusicPlayer.Editors
         public const string Uguiexisrich_Bool = "UGUIExIsRich";
 
         #region Language Var
-        private static string _notFindMaterial  = "The set Material could not be found";
-        private static string _notSprite = "The set Sprite could not be found";
-        private static string _titile = "UGUI Settings";
-        private static string _selectDefaultMaterialLabel = "Set Default Material:";
-        private static string _selectDefaultSpriteLabel = "Set Default Sprite";
-        private static string _isRayCshTargetLabel = "Open RayCastTarget(Interactive elements are not affected) Default Value: false";
-        private static string _isOpenRich = "Open Rich Support,Default Value: false";
-        private static string _optimizeWarning = "If {0} is not set, Unity will set the default value at runtime, which will cause efficiency problems. It is recommended to manually select to avoid runtime assignment. Click to locate the object.";
-        private static string _notFindAssetError = "{0},Path:{1}";
-        private static string _doNotMaskToRectMask = "Mask Do not to RectMask";
+        private static string _notFindMaterial  => LocalizationManager.Instance.GetValue("NotFindMaterial",out  _);
+        private static string _notSprite => LocalizationManager.Instance.GetValue("NotSprite",out  _);
+        private static string _titile => LocalizationManager.Instance.GetValue("OptimizedElementSettingWindowTitle",out  _);
+        private static string _selectDefaultMaterialLabel  => LocalizationManager.Instance.GetValue("SetDefaultMaterial",out  _);
+        private static string _selectDefaultSpriteLabel => LocalizationManager.Instance.GetValue("SetDefaultSprite",out  _);
+        private static string _isRayCastTargetLabel => LocalizationManager.Instance.GetValue("OpenRayCastTarget",out  _);
+        private static string _isOpenRich => LocalizationManager.Instance.GetValue("OpenRich",out  _);
+        private static string _optimizeWarning => LocalizationManager.Instance.GetValue("OptimizeWarning",out  _);
+        private static string _notFindAssetError => LocalizationManager.Instance.GetValue("NotFindAsset",out  _);
+        private static string _doNotMaskToRectMask => LocalizationManager.Instance.GetValue("DoNotMaskToRectMask",out  _);
         #endregion
 
         
@@ -177,7 +197,7 @@ namespace IcMusicPlayer.Editors
             }
             EditorGUILayout.EndHorizontal();
 
-            _isRayCastTarget = EditorGUILayout.ToggleLeft(_isRayCshTargetLabel, _isRayCastTarget);
+            _isRayCastTarget = EditorGUILayout.ToggleLeft(_isRayCastTargetLabel, _isRayCastTarget);
             
             _isRich = EditorGUILayout.ToggleLeft(_isOpenRich, _isRich);
             
