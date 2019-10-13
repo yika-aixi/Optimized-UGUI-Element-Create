@@ -5,14 +5,8 @@
 //2019年03月22日-03:20
 //IcMusicPlayer.Editor
 
-using System;
-using System.IO;
-using CabinIcarus.EditorFrame.Base.Editor;
-using CabinIcarus.EditorFrame.Config;
-using CabinIcarus.EditorFrame.Utils;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace IcMusicPlayer.Editors
@@ -73,7 +67,7 @@ namespace IcMusicPlayer.Editors
 
         private static T _loadAsset<T>(string key, string errorMessage = null,GameObject go = null) where T : Object
         {
-            var path = Cfg.CSVEncrypting.GetValue<string>(key);
+            var path = EditorPrefs.GetString(key);
 
             var asset = AssetDatabase.LoadAssetAtPath<T>(path);
 
@@ -94,11 +88,11 @@ namespace IcMusicPlayer.Editors
             return asset;
         }
 
-        public static bool IsRayCastTarget => Cfg.CSVEncrypting.GetValue<bool>(Uguiexisraycasttarget_Bool);
+        public static bool IsRayCastTarget => EditorPrefs.GetBool(Uguiexisraycasttarget_Bool);
         
-        public static bool IsRich => Cfg.CSVEncrypting.GetValue<bool>(Uguiexisrich_Bool);
+        public static bool IsRich => EditorPrefs.GetBool(Uguiexisrich_Bool);
         
-        public static bool NoToRectMask => Cfg.CSVEncrypting.GetValue<bool>(DoNotMaskToRectMask_Bool);
+        public static bool NoToRectMask => EditorPrefs.GetBool(DoNotMaskToRectMask_Bool);
 
         [MenuItem("Icarus/UGUI/Optimized Element Setting",false,33)]
         static void _uGUISetting()
@@ -127,17 +121,17 @@ namespace IcMusicPlayer.Editors
                 path = AssetDatabase.GetAssetPath(asset);
             }
             
-            Cfg.CSVEncrypting.SetValue(key, path);
+            EditorPrefs.SetString(key, path);
         }
 
         static void _setRayCastEnableState(bool enable)
         {
-            Cfg.CSVEncrypting.SetValue(Uguiexisraycasttarget_Bool, enable);
+            EditorPrefs.SetBool(Uguiexisraycasttarget_Bool, enable);
         }
         
         static void _setRichEnableState(bool enable)
         {
-            Cfg.CSVEncrypting.SetValue(Uguiexisrich_Bool, enable);
+            EditorPrefs.SetBool(Uguiexisrich_Bool, enable);
         }
 
         private Material _material;
@@ -181,7 +175,7 @@ namespace IcMusicPlayer.Editors
             _setDefaultSprite(_sprite);
             _setRayCastEnableState(_isRayCastTarget);
             _setRichEnableState(_isRich);
-            Cfg.CSVEncrypting.SetValue(DoNotMaskToRectMask_Bool, _donotMaskToRMask);
+            EditorPrefs.SetBool(DoNotMaskToRectMask_Bool, _donotMaskToRMask);
             
 //            if (GUILayout.Button("复制 Unity 默认 Sprite 到项目"))
 //            {
