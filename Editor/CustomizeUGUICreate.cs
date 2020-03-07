@@ -13,9 +13,9 @@ using CabinIcarus.EditorFrame.Config;
 using CabinIcarus.EditorFrame.Localization;
 using CabinIcarus.EditorFrame.Utils;
 using UnityEditor;
+using UnityEditor.Experimental.U2D;
 using UnityEditor.Sprites;
 using UnityEngine;
-using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace IcMusicPlayer.Editors
@@ -89,11 +89,6 @@ namespace IcMusicPlayer.Editors
             return _loadAsset<Material>(Uguiexdefaultmaterialpath_String, _notFindMaterial,go);
         }
 
-        public static Sprite GetDefalutSprite(GameObject go)
-        {
-            return _loadAsset<Sprite>(Uguiexdefaultspritepath_String, _notSprite,go);
-        }
-
         private static T _loadAsset<T>(string key, string errorMessage = null,GameObject go = null) where T : Object
         {
             var path = Cfg.CSVEncrypting.GetValue<string>(key);
@@ -160,9 +155,9 @@ namespace IcMusicPlayer.Editors
         {
             get
             {
-                if (_backgroundSprite)
+                if (!_backgroundSprite)
                 {
-                    _backgroundSprite = _getSprite(_backgroundSprite,"Background",UGUISource_MenuOptions.kStandardSpritePath);
+                    _backgroundSprite = _getSprite(_backgroundSprite,"Background",UGUISource_MenuOptions.kBackgroundSpritePath);
                 }
 
                 return _backgroundSprite;
@@ -173,7 +168,7 @@ namespace IcMusicPlayer.Editors
         {
             get
             {
-                if (_inputFieldBackground)
+                if (!_inputFieldBackground)
                 {
                     _inputFieldBackground = _getSprite(_inputFieldBackground,"InputFieldBackground",UGUISource_MenuOptions.kInputFieldBackgroundPath);
                 }
@@ -186,7 +181,7 @@ namespace IcMusicPlayer.Editors
         {
             get
             {
-                if (_knob)
+                if (!_knob)
                 {
                     _knob = _getSprite(_knob,"Knob",UGUISource_MenuOptions.kKnobPath);
                 }
@@ -199,7 +194,7 @@ namespace IcMusicPlayer.Editors
         {
             get
             {
-                if (_checkmark)
+                if (!_checkmark)
                 {
                     _checkmark = _getSprite(_checkmark,"Checkmark",UGUISource_MenuOptions.kCheckmarkPath);
                 }
@@ -212,7 +207,7 @@ namespace IcMusicPlayer.Editors
         {
             get
             {
-                if (_dropdownArrow)
+                if (!_dropdownArrow)
                 {
                     _dropdownArrow = _getSprite(_dropdownArrow,"DropdownArrowPath",UGUISource_MenuOptions.kDropdownArrowPath);
                 }
@@ -225,7 +220,7 @@ namespace IcMusicPlayer.Editors
         {
             get
             {
-                if (_uIMask)
+                if (!_uIMask)
                 {
                     _uIMask = _getSprite(_uIMask,"MaskPath",UGUISource_MenuOptions.kMaskPath);
                 }
@@ -264,7 +259,7 @@ namespace IcMusicPlayer.Editors
 
         static void _setDefaultSprite(Sprite sprite,string key)
         {
-            _saveObjectPathToCfg(sprite, $"{Uguiexdefaultspritepath_String}_{key}");
+            _saveObjectPathToCfg(sprite, _getSpriteKey(key));
         }
 
         static void _saveObjectPathToCfg<T>(T asset, string key) where T : Object
@@ -307,6 +302,18 @@ namespace IcMusicPlayer.Editors
             _material = _loadAsset<Material>(Uguiexdefaultmaterialpath_String);
             _isRayCastTarget = IsRayCastTarget;
             _isRich = IsRich;
+        }
+
+        protected override void On_Enable()
+        {
+            //init
+            var t = UiSprite;
+            t = UIMask;
+            t = Knob;
+            t = Checkmark;
+            t = BackgroundSprite;
+            t = DropdownArrow;
+            t = InputFieldBackground;
         }
 
         private Vector2 _spriteFieldSize;
@@ -394,20 +401,23 @@ namespace IcMusicPlayer.Editors
                         if (!string.IsNullOrWhiteSpace(path))
                         {
                             _lastSelectPath = path;
-                            
                             path = PathUtil.GetCombinePath(path, $"{builtinExtraResource.name}.png");
-                            
                             File.WriteAllBytes(path,png);
-                            
                             AssetDatabase.Refresh();
                             
                             var ass = (TextureImporter) AssetUtil.SelectAsset(path);
+                            ass.isReadable = true;
                             ass.textureType = TextureImporterType.Sprite;
+                            ass.spriteImportMode = SpriteImportMode.Single;
+                            ass.spriteBorder = builtinExtraResource.border;
+                            ass.spritePivot = builtinExtraResource.pivot;
                             ass.SaveAndReimport();
-                            AssetUtil.SaveAndRefreshAsset();
+                            AssetDatabase.Refresh();                      
                             var objects = AssetDatabase.LoadAllAssetsAtPath(ass.assetPath);
                             cache = (Sprite) objects[1];
                             _setDefaultSprite(cache,title);
+                            Repaint();
+                            return;
                         }
                     }
                 }

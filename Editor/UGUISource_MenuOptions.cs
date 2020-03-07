@@ -134,7 +134,6 @@ namespace IcMusicPlayer.Editors
             GameObject go = DefaultControls.CreateImage(GetStandardResources());
             var image = go.GetComponent<Image>();
             image.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            image.sprite = CustomizeUGUICreate.GetDefalutSprite(image.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(image.gameObject) : image.sprite;
             image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
             PlaceUIElementRoot(go, menuCommand);
         }
@@ -159,7 +158,6 @@ namespace IcMusicPlayer.Editors
             GameObject go = DefaultControls.CreateButton(GetStandardResources());
 
             var image = go.GetComponent<Image>();
-            image.sprite = CustomizeUGUICreate.GetDefalutSprite(image.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(image.gameObject) : image.sprite;
             image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
 
             var text = go.transform.GetChild(0).GetComponent<Text>();
@@ -176,13 +174,11 @@ namespace IcMusicPlayer.Editors
             GameObject go = DefaultControls.CreateToggle(GetStandardResources());
 
             var background = go.transform.Find("Background").GetComponent<Image>();
-
-            background.sprite = CustomizeUGUICreate.GetDefalutSprite(background.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(background.gameObject) : background.sprite;
+            background.type = Image.Type.Simple;
             background.material = CustomizeUGUICreate.GetDefalutMaterial(background.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(background.gameObject) : background.material;
 
             var checkmark = background.transform.Find("Checkmark").GetComponent<Image>();
             
-            checkmark.sprite = CustomizeUGUICreate.GetDefalutSprite(checkmark.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(checkmark.gameObject) : checkmark.sprite;
             checkmark.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             checkmark.material = CustomizeUGUICreate.GetDefalutMaterial (checkmark.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(checkmark.gameObject) : checkmark.material;
             
@@ -203,15 +199,12 @@ namespace IcMusicPlayer.Editors
             var Fill = go.transform.Find("Fill Area").GetChild(0).GetComponent<Image>();
             var Handle = go.transform.Find("Handle Slide Area").GetChild(0).GetComponent<Image>();
             
-            Background.sprite = CustomizeUGUICreate.GetDefalutSprite(Background.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Background.gameObject) : Background.sprite;
             Background.material = CustomizeUGUICreate.GetDefalutMaterial(Background.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Background.gameObject) : Background.material;
             Background.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             
-            Fill.sprite = CustomizeUGUICreate.GetDefalutSprite(Fill.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Fill.gameObject) : Fill.sprite;
             Fill.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             Fill.material = CustomizeUGUICreate.GetDefalutMaterial(Fill.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Fill.gameObject) : Fill.material;
             
-            Handle.sprite = CustomizeUGUICreate.GetDefalutSprite(Handle.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Handle.gameObject) : Handle.sprite;
             Handle.material = CustomizeUGUICreate.GetDefalutMaterial(Handle.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Handle.gameObject) : Handle.material;
             
             PlaceUIElementRoot(go, menuCommand);
@@ -230,13 +223,11 @@ namespace IcMusicPlayer.Editors
         static void _setScrollbar(GameObject scrollbar)
         {
             var image = scrollbar.GetComponent<Image>();
-            image.sprite = CustomizeUGUICreate.GetDefalutSprite(image.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(image.gameObject) : image.sprite;
             image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
 
-            var Handle = scrollbar.transform.Find("Sliding Area").GetChild(0).GetComponent<Image>();
+            var handle = scrollbar.transform.Find("Sliding Area").GetChild(0).GetComponent<Image>();
 
-            Handle.sprite = CustomizeUGUICreate.GetDefalutSprite(Handle.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Handle.gameObject) : Handle.sprite;
-            Handle.material = CustomizeUGUICreate.GetDefalutMaterial(Handle.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(Handle.gameObject) : Handle.material;
+            handle.material = CustomizeUGUICreate.GetDefalutMaterial(handle.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(handle.gameObject) : handle.material;
         }
 
         // More advanced controls below
@@ -263,29 +254,22 @@ namespace IcMusicPlayer.Editors
             Item_Label.material = CustomizeUGUICreate.GetDefalutMaterial(Item_Label.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Item_Label.gameObject) : Item_Label.material;
             Item_Label.supportRichText = CustomizeUGUICreate.IsRich;
             
-            Arrow.sprite = CustomizeUGUICreate.GetDefalutSprite(Arrow.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Arrow.gameObject) : Arrow.sprite;
             Arrow.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             Arrow.material = CustomizeUGUICreate.GetDefalutMaterial(Arrow.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Arrow.gameObject) : Arrow.material;
             
-            Template.sprite = CustomizeUGUICreate.GetDefalutSprite(Template.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Template.gameObject) : Arrow.sprite;
             Template.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             Template.material = CustomizeUGUICreate.GetDefalutMaterial(Template.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Template.gameObject) : Template.material;
             
-            Viewport.sprite = CustomizeUGUICreate.GetDefalutSprite(Viewport.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Viewport.gameObject) : Viewport.sprite;
             Viewport.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             Viewport.material = CustomizeUGUICreate.GetDefalutMaterial(Viewport.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Viewport.gameObject) : Viewport.material;
             
-            Item_Background.sprite = CustomizeUGUICreate.GetDefalutSprite(Item_Background.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Item_Background.gameObject) : Item_Background.sprite;
             Item_Background.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             Item_Background.material = CustomizeUGUICreate.GetDefalutMaterial(Item_Background.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Item_Background.gameObject) : Item_Background.material;
             
-            Item_Checkmark.sprite = CustomizeUGUICreate.GetDefalutSprite(Item_Checkmark.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(Item_Checkmark.gameObject) : Item_Checkmark.sprite;
             Item_Checkmark.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             Item_Checkmark.material = CustomizeUGUICreate.GetDefalutMaterial(Item_Checkmark.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Item_Checkmark.gameObject) : Item_Checkmark.material;
             
             var goImage = go.GetComponent<Image>();
-
-            goImage.sprite = CustomizeUGUICreate.GetDefalutSprite(goImage.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(goImage.gameObject) : goImage.sprite;
 
             goImage.material = CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) : goImage.material;
         }
@@ -308,8 +292,6 @@ namespace IcMusicPlayer.Editors
 
             var goImage = go.GetComponent<Image>();
 
-            goImage.sprite = CustomizeUGUICreate.GetDefalutSprite(goImage.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(goImage.gameObject) : goImage.sprite;
-
             goImage.material = CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) : goImage.material;
         }
 
@@ -320,7 +302,6 @@ namespace IcMusicPlayer.Editors
             PlaceUIElementRoot(go, menuCommand);
 
             var image = go.GetComponent<Image>();
-            image.sprite = CustomizeUGUICreate.GetDefalutSprite(image.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(image.gameObject) : image.sprite;
             image.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
             image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
             
@@ -342,14 +323,6 @@ namespace IcMusicPlayer.Editors
             {
                 var viewportImage = viewport.GetComponent<Image>();
 
-                Sprite sprite = CustomizeUGUICreate.GetDefalutSprite(viewport);
-
-                if (!sprite)
-                {
-                    sprite = viewportImage.sprite;
-                }
-
-                viewportImage.sprite = sprite;
                 viewportImage.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
 
                 Material material = CustomizeUGUICreate.GetDefalutMaterial(viewport.gameObject);
@@ -372,7 +345,6 @@ namespace IcMusicPlayer.Editors
 
             var goImage = go.GetComponent<Image>();
 
-            goImage.sprite = CustomizeUGUICreate.GetDefalutSprite(goImage.gameObject) ? CustomizeUGUICreate.GetDefalutSprite(goImage.gameObject) : goImage.sprite;
             goImage.material = CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) : goImage.material;
 
             var Scrollbar_Horizontal = go.transform.Find("Scrollbar Horizontal").gameObject;
