@@ -1,0 +1,19 @@
+{
+    "name": "CabinIcarus.UGUI.OptimizedElement",
+    "references": [
+        "Icarus.EditorFrame",
+        "Icarus.EditorFrame.Common",
+        "Unity.ugui",
+        "Unity.ugui.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
