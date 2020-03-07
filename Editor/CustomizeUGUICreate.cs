@@ -13,8 +13,6 @@ using CabinIcarus.EditorFrame.Config;
 using CabinIcarus.EditorFrame.Localization;
 using CabinIcarus.EditorFrame.Utils;
 using UnityEditor;
-using UnityEditor.Experimental.U2D;
-using UnityEditor.Sprites;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -408,9 +406,31 @@ namespace IcMusicPlayer.Editors
                             var ass = (TextureImporter) AssetUtil.SelectAsset(path);
                             ass.isReadable = true;
                             ass.textureType = TextureImporterType.Sprite;
-                            ass.spriteImportMode = SpriteImportMode.Single;
-                            ass.spriteBorder = builtinExtraResource.border;
-                            ass.spritePivot = builtinExtraResource.pivot;
+
+                            bool isMulti = builtinExtraResource.rect.position.sqrMagnitude > 0;
+                            
+                            ass.spriteImportMode = isMulti ? SpriteImportMode.Multiple : SpriteImportMode.Single;
+
+                            if (!isMulti)
+                            {
+                                ass.spriteBorder = builtinExtraResource.border;
+                                ass.spritePivot = builtinExtraResource.pivot;
+                            }
+                            else
+                            {
+                                ass.spritesheet = new[]
+                                {
+                                    new SpriteMetaData
+                                    {
+                                        alignment = 9,
+                                        border = builtinExtraResource.border,
+                                        pivot = builtinExtraResource.pivot,
+                                        rect = builtinExtraResource.rect,
+                                        name = builtinExtraResource.name
+                                    }, 
+                                };
+                            }
+                            
                             ass.SaveAndReimport();
                             AssetDatabase.Refresh();                      
                             var objects = AssetDatabase.LoadAllAssetsAtPath(ass.assetPath);
