@@ -12,36 +12,38 @@ using UnityEngine.UI;
 
 namespace IcMusicPlayer.Editors
 {
+    //name: MenuOptions
     public class UGUISource_MenuOptions
     {
         private const string kUILayerName = "UI";
 
-        private const string kStandardSpritePath = "UI/Skin/UISprite.psd";
-        private const string kBackgroundSpritePath = "UI/Skin/Background.psd";
-        private const string kInputFieldBackgroundPath = "UI/Skin/InputFieldBackground.psd";
-        private const string kKnobPath = "UI/Skin/Knob.psd";
-        private const string kCheckmarkPath = "UI/Skin/Checkmark.psd";
-        private const string kDropdownArrowPath = "UI/Skin/DropdownArrow.psd";
-        private const string kMaskPath = "UI/Skin/UIMask.psd";
+        internal const string kStandardSpritePath = "UI/Skin/UISprite.psd";
+        internal const string kBackgroundSpritePath = "UI/Skin/Background.psd";
+        internal const string kInputFieldBackgroundPath = "UI/Skin/InputFieldBackground.psd";
+        internal const string kKnobPath = "UI/Skin/Knob.psd";
+        internal const string kCheckmarkPath = "UI/Skin/Checkmark.psd";
+        internal const string kDropdownArrowPath = "UI/Skin/DropdownArrow.psd";
+        internal const string kMaskPath = "UI/Skin/UIMask.psd";
 
+#if UNITY_5_3_OR_NEWER
         static private DefaultControls.Resources s_StandardResources;
 
         static private DefaultControls.Resources GetStandardResources()
         {
             if (s_StandardResources.standard == null)
             {
-                s_StandardResources.standard = AssetDatabase.GetBuiltinExtraResource<Sprite>(kStandardSpritePath);
-                s_StandardResources.background = AssetDatabase.GetBuiltinExtraResource<Sprite>(kBackgroundSpritePath);
-                s_StandardResources.inputField =
-                    AssetDatabase.GetBuiltinExtraResource<Sprite>(kInputFieldBackgroundPath);
-                s_StandardResources.knob = AssetDatabase.GetBuiltinExtraResource<Sprite>(kKnobPath);
-                s_StandardResources.checkmark = AssetDatabase.GetBuiltinExtraResource<Sprite>(kCheckmarkPath);
-                s_StandardResources.dropdown = AssetDatabase.GetBuiltinExtraResource<Sprite>(kDropdownArrowPath);
-                s_StandardResources.mask = AssetDatabase.GetBuiltinExtraResource<Sprite>(kMaskPath);
+                s_StandardResources.standard = CustomizeUGUICreate.UiSprite;
+                s_StandardResources.background = CustomizeUGUICreate.BackgroundSprite;
+                s_StandardResources.inputField = CustomizeUGUICreate.InputFieldBackground;
+                s_StandardResources.knob = CustomizeUGUICreate.Knob;
+                s_StandardResources.checkmark = CustomizeUGUICreate.Checkmark;
+                s_StandardResources.dropdown = CustomizeUGUICreate.DropdownArrow;
+                s_StandardResources.mask = CustomizeUGUICreate.UIMask;
             }
 
             return s_StandardResources;
         }
+#endif
 
         private static void SetPositionVisibleinSceneView(RectTransform canvasRTransform, RectTransform itemTransform)
         {

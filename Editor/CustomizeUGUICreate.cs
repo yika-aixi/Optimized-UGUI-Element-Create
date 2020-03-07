@@ -13,6 +13,7 @@ using CabinIcarus.EditorFrame.Config;
 using CabinIcarus.EditorFrame.Localization;
 using CabinIcarus.EditorFrame.Utils;
 using UnityEditor;
+using UnityEditor.Sprites;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -29,7 +30,7 @@ namespace IcMusicPlayer.Editors
 
         private static void _loadLanguage()
         {
-            LocalizationManager.Instance.LoadCsvLanguageConfig(PathUtil.GetDataPathCombinePath("Cabin Icarus/Optimized_UGUI/Optimized-UGUI-Element-Create/Localzation/Window")
+            LocalizationManager.Instance.LoadCsvLanguageConfig(PathUtil.GetDataPathCombinePath("Cabin Icarus/Optimized-UGUI-Element-Create/Localzation/Window")
                 ,1);
             
             EditorApplication.update -= _loadLanguage;
@@ -78,6 +79,8 @@ namespace IcMusicPlayer.Editors
         private static string _optimizeWarning => LocalizationManager.Instance.GetValue("OptimizeWarning",out  _);
         private static string _notFindAssetError => LocalizationManager.Instance.GetValue("NotFindAsset",out  _);
         private static string _doNotMaskToRectMask => LocalizationManager.Instance.GetValue("DoNotMaskToRectMask",out  _);
+        
+        private static string _spriteSetting => LocalizationManager.Instance.GetValue("SpriteSetting","Sprite Setting");
         #endregion
 
         
@@ -120,6 +123,132 @@ namespace IcMusicPlayer.Editors
         
         public static bool NoToRectMask => Cfg.CSVEncrypting.GetValue<bool>(DoNotMaskToRectMask_Bool);
 
+        private static string _getSpriteKey(string name)
+        {
+            return $"{Uguiexdefaultspritepath_String}_{name}";
+        }
+
+        private static Sprite _getSprite(Sprite sprite, string name,string builtinExtraResourcePath)
+        {
+            if (!sprite)
+            {
+                sprite = _loadAsset<Sprite>(_getSpriteKey(name));
+            }
+
+            if (!sprite)
+            {
+                sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(builtinExtraResourcePath);
+            }
+
+            return sprite;
+        }
+        
+        public static Sprite UiSprite
+        {
+            get
+            {
+                if (!_uiSprite)
+                {
+                    _uiSprite = _getSprite(_uiSprite,"UISprite",UGUISource_MenuOptions.kStandardSpritePath);
+                }
+
+                return _uiSprite;
+            }
+        }
+
+        public static Sprite BackgroundSprite
+        {
+            get
+            {
+                if (_backgroundSprite)
+                {
+                    _backgroundSprite = _getSprite(_backgroundSprite,"Background",UGUISource_MenuOptions.kStandardSpritePath);
+                }
+
+                return _backgroundSprite;
+            }
+        }
+
+        public static Sprite InputFieldBackground
+        {
+            get
+            {
+                if (_inputFieldBackground)
+                {
+                    _inputFieldBackground = _getSprite(_inputFieldBackground,"InputFieldBackground",UGUISource_MenuOptions.kInputFieldBackgroundPath);
+                }
+                
+                return _inputFieldBackground;
+            }
+        }
+
+        public static Sprite Knob
+        {
+            get
+            {
+                if (_knob)
+                {
+                    _knob = _getSprite(_knob,"Knob",UGUISource_MenuOptions.kKnobPath);
+                }
+
+                return _knob;
+            }
+        }
+
+        public static Sprite Checkmark
+        {
+            get
+            {
+                if (_checkmark)
+                {
+                    _checkmark = _getSprite(_checkmark,"Checkmark",UGUISource_MenuOptions.kCheckmarkPath);
+                }
+                
+                return _checkmark;
+            }
+        }
+
+        public static Sprite DropdownArrow
+        {
+            get
+            {
+                if (_dropdownArrow)
+                {
+                    _dropdownArrow = _getSprite(_dropdownArrow,"DropdownArrowPath",UGUISource_MenuOptions.kDropdownArrowPath);
+                }
+                
+                return _dropdownArrow;
+            }
+        }
+
+        public static Sprite UIMask
+        {
+            get
+            {
+                if (_uIMask)
+                {
+                    _uIMask = _getSprite(_uIMask,"MaskPath",UGUISource_MenuOptions.kMaskPath);
+                }
+                
+                return _uIMask;
+            }
+        }
+
+        private Vector2 _minSize = new Vector2(50,50);
+        private float _sizeScale;
+        public Vector2 SpriteFieldSize
+        {
+            get => _spriteFieldSize;
+            set
+            {
+                _spriteFieldSize = value;
+
+                _spriteFieldSize[0] = Math.Max(_minSize[0], value[0]);
+
+                _spriteFieldSize[1] = Math.Max(_minSize[1], value[1]);
+            }
+        }
+
         [MenuItem("Icarus/UGUI/Optimized Element Setting",false,33)]
         static void _uGUISetting()
         {
@@ -133,9 +262,9 @@ namespace IcMusicPlayer.Editors
             _saveObjectPathToCfg(material, Uguiexdefaultmaterialpath_String);
         }
 
-        static void _setDefaultSprite(Sprite sprite)
+        static void _setDefaultSprite(Sprite sprite,string key)
         {
-            _saveObjectPathToCfg(sprite, Uguiexdefaultspritepath_String);
+            _saveObjectPathToCfg(sprite, $"{Uguiexdefaultspritepath_String}_{key}");
         }
 
         static void _saveObjectPathToCfg<T>(T asset, string key) where T : Object
@@ -161,18 +290,27 @@ namespace IcMusicPlayer.Editors
         }
 
         private Material _material;
-        private Sprite _sprite;
+        private static Sprite _uiSprite;
+        private static Sprite _backgroundSprite;
+        private static Sprite _inputFieldBackground;
+        private static Sprite _knob;
+        private static Sprite _checkmark;
+        private static Sprite _dropdownArrow;
+        private static Sprite _uIMask;
+        
         private bool _isRayCastTarget,_isRich,_donotMaskToRMask;
 
+        private bool _spriteSet;
 
         private void Awake()
         {
             _material = _loadAsset<Material>(Uguiexdefaultmaterialpath_String);
-            _sprite = _loadAsset<Sprite>(Uguiexdefaultspritepath_String);
             _isRayCastTarget = IsRayCastTarget;
             _isRich = IsRich;
         }
 
+        private Vector2 _spriteFieldSize;
+        private Vector2 _spriteFieldPos;
         private void OnGUI()
         {
             DrawLocalizationSelect();
@@ -189,13 +327,26 @@ namespace IcMusicPlayer.Editors
             }
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginHorizontal();
+            _spriteSet = EditorGUILayout.Foldout(_spriteSet, _spriteSetting,true);
+            
+            if (_spriteSet)
             {
-                EditorGUILayout.LabelField(_selectDefaultSpriteLabel);
-
-                _sprite = (Sprite) EditorGUILayout.ObjectField(_sprite, typeof(Sprite), false);
+                SpriteFieldSize = EditorGUILayout.Vector2Field("Size", SpriteFieldSize);
+                _sizeScale = EditorGUILayout.Slider("SizeScale", _sizeScale, 1, 3);
+                _spriteFieldPos = EditorGUILayout.BeginScrollView(_spriteFieldPos);
+                {
+                    _spriteHandle("UISprite", UGUISource_MenuOptions.kStandardSpritePath, ref _uiSprite);
+                    _spriteHandle("Background", UGUISource_MenuOptions.kBackgroundSpritePath,
+                        ref _backgroundSprite);
+                    _spriteHandle("InputFieldBackground", UGUISource_MenuOptions.kInputFieldBackgroundPath,
+                        ref _inputFieldBackground);
+                    _spriteHandle("Knob", UGUISource_MenuOptions.kKnobPath, ref _knob);
+                    _spriteHandle("Checkmark", UGUISource_MenuOptions.kCheckmarkPath, ref _checkmark);
+                    _spriteHandle("DropdownArrow", UGUISource_MenuOptions.kDropdownArrowPath, ref _dropdownArrow);
+                    _spriteHandle("UIMask", UGUISource_MenuOptions.kMaskPath, ref _uIMask);
+                }
+                EditorGUILayout.EndScrollView();
             }
-            EditorGUILayout.EndHorizontal();
 
             _isRayCastTarget = EditorGUILayout.ToggleLeft(_isRayCastTargetLabel, _isRayCastTarget);
             
@@ -204,53 +355,78 @@ namespace IcMusicPlayer.Editors
             _donotMaskToRMask = EditorGUILayout.ToggleLeft(_doNotMaskToRectMask, _donotMaskToRMask);
             
             _setDefaultMaterial(_material);
-            _setDefaultSprite(_sprite);
             _setRayCastEnableState(_isRayCastTarget);
             _setRichEnableState(_isRich);
             Cfg.CSVEncrypting.SetValue(DoNotMaskToRectMask_Bool, _donotMaskToRMask);
+        }
+
+        private string _lastSelectPath;
+        
+        private void _spriteHandle(string title, string builtinExtraResourcePath,ref Sprite cache)
+        {
+            if (string.IsNullOrWhiteSpace(_lastSelectPath))
+            {
+                _lastSelectPath = Application.dataPath;
+            }
             
-//            if (GUILayout.Button("复制 Unity 默认 Sprite 到项目"))
-//            {
-//                string kKnobPath = "UI/Skin/Knob.psd";
-//
-//                //var path = EditorUtility.SaveFilePanel("Select Save Folder", Application.dataPath,"uiSprite", ".png");
-//
-//                var path = EditorUtility.OpenFolderPanel("s", Application.dataPath, "");
-//                
-//                if (string.IsNullOrEmpty(path))
-//                {
-//                    Debug.LogError("取消了复制");
-//                    return;
-//                }
+            EditorGUILayout.BeginHorizontal("box");
+            {
+                EditorGUILayout.LabelField(_selectDefaultSpriteLabel,title);
 
-//                Object[] UnityAssets = AssetDatabase.LoadAllAssetsAtPath("Resources/unity_builtin_extra");
-//                foreach (var asset in UnityAssets)
-//                {
-//                    path = path.Replace(Application.dataPath,"Assets/");
-//                    if (asset is Texture2D)
-//                    {
-//                        AssetDatabase.CreateAsset(asset, Path.Combine(path, "uiSprite.asset"));
-//                    }
-//                }
+                Sprite builtinExtraResource = AssetDatabase.GetBuiltinExtraResource<Sprite>(builtinExtraResourcePath);
 
-            // var texture2D = AssetDatabase.GetBuiltinExtraResource<Texture2D>(kKnobPath);
-//                var sp = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height),
-//                    new Vector2(0.5f, 0.5f));
-//
-//                var bys = sp.texture.EncodeToPNG();
-//
-//                path = path.Replace(Application.dataPath,"Assets/");
+                EditorGUILayout.BeginVertical();
+                {
+                    GUI.enabled = false;
+                    {
+                        EditorGUILayout.ObjectField(builtinExtraResource, typeof(Sprite), false,GUILayout.Width(SpriteFieldSize.x * _sizeScale),GUILayout.Height(SpriteFieldSize.y * _sizeScale));
+                    }
+                    GUI.enabled = true;
 
-            //var bys = CombineTextures(texture2D).EncodeToPNG();
+                    if (GUILayout.Button("Export",GUILayout.Width(SpriteFieldSize.x * _sizeScale)))
+                    {
+                        var temp = builtinExtraResource.texture.ToWritableAndRead();
 
-            //File.WriteAllBytes(path,bys);
+                        var png = temp.EncodeToPNG();
 
-//                Graphics.CopyTexture(texture2D.);
+                        var path = EditorUtility.OpenFolderPanel("save Folder", _lastSelectPath, "");
 
-//                AssetDatabase.CreateAsset(texture2D, Path.Combine(path, "uiSprite.png"));
-
-//                AssetDatabase.Refresh();
-//            }
+                        if (!string.IsNullOrWhiteSpace(path))
+                        {
+                            _lastSelectPath = path;
+                            
+                            path = PathUtil.GetCombinePath(path, $"{builtinExtraResource.name}.png");
+                            
+                            File.WriteAllBytes(path,png);
+                            
+                            AssetDatabase.Refresh();
+                            
+                            var ass = (TextureImporter) AssetUtil.SelectAsset(path);
+                            ass.textureType = TextureImporterType.Sprite;
+                            ass.SaveAndReimport();
+                            AssetUtil.SaveAndRefreshAsset();
+                            var objects = AssetDatabase.LoadAllAssetsAtPath(ass.assetPath);
+                            cache = (Sprite) objects[1];
+                            _setDefaultSprite(cache,title);
+                        }
+                    }
+                }
+                EditorGUILayout.EndVertical();
+                
+                EditorGUI.BeginChangeCheck();
+                cache =(Sprite) EditorGUILayout.ObjectField(cache, typeof(Sprite), false,GUILayout.Width(SpriteFieldSize.x * _sizeScale),GUILayout.Height(SpriteFieldSize.y * _sizeScale));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    _setDefaultSprite(cache,title);
+                    
+                    if (!cache)
+                    {
+                        cache = builtinExtraResource;
+                    }
+                    
+                }
+            }
+            EditorGUILayout.EndHorizontal();
         }
     }
 }
