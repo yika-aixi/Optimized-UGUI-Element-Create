@@ -65,12 +65,18 @@ namespace IcMusicPlayer.Editors
         /// 是否富文本支持 key
         /// </summary>
         public const string Uguiexisrich_Bool = "UGUIExIsRich";
+        
+        /// <summary>
+        /// 默认字体
+        /// </summary>
+        public const string UguiexDefaultFontPath = "UguiexDefaultFontPath";
 
         #region Language Var
         private static string _notFindMaterial  => LocalizationManager.Instance.GetValue("NotFindMaterial",out  _);
-        private static string _notSprite => LocalizationManager.Instance.GetValue("NotSprite",out  _);
+        private static string _notFindFont  => LocalizationManager.Instance.GetValue("NotFindFont",out  _);
         private static string _titile => LocalizationManager.Instance.GetValue("OptimizedElementSettingWindowTitle",out  _);
         private static string _selectDefaultMaterialLabel  => LocalizationManager.Instance.GetValue("SetDefaultMaterial",out  _);
+        private static string _selectDefaultFontlLabel  => LocalizationManager.Instance.GetValue("SetDefaultFont",out  _);
         private static string _selectDefaultSpriteLabel => LocalizationManager.Instance.GetValue("SetDefaultSprite",out  _);
         private static string _isRayCastTargetLabel => LocalizationManager.Instance.GetValue("OpenRayCastTarget",out  _);
         private static string _isOpenRich => LocalizationManager.Instance.GetValue("OpenRich",out  _);
@@ -81,8 +87,12 @@ namespace IcMusicPlayer.Editors
         private static string _spriteSetting => LocalizationManager.Instance.GetValue("SpriteSetting","Sprite Setting");
         #endregion
 
+        public static Font GetDefaultFont(GameObject go)
+        {
+            return _loadAsset<Font>(UguiexDefaultFontPath, _notFindFont,go);
+        }
         
-        public static Material GetDefalutMaterial(GameObject go)
+        public static Material GetDefaultMaterial(GameObject go)
         {
             return _loadAsset<Material>(Uguiexdefaultmaterialpath_String, _notFindMaterial,go);
         }
@@ -135,7 +145,9 @@ namespace IcMusicPlayer.Editors
 
             return sprite;
         }
-        
+
+        #region Sprite
+
         public static Sprite UiSprite
         {
             get
@@ -227,6 +239,8 @@ namespace IcMusicPlayer.Editors
             }
         }
 
+        #endregion
+
         private Vector2 _minSize = new Vector2(50,50);
         private float _sizeScale;
         public Vector2 SpriteFieldSize
@@ -250,6 +264,11 @@ namespace IcMusicPlayer.Editors
             win.Show();
         }
 
+        void _setDefaultFont()
+        {
+            _saveObjectPathToCfg(_font, UguiexDefaultFontPath);
+        }
+        
         static void _setDefaultMaterial(Material material)
         {
             _saveObjectPathToCfg(material, Uguiexdefaultmaterialpath_String);
@@ -283,6 +302,7 @@ namespace IcMusicPlayer.Editors
         }
 
         private Material _material;
+        private Font _font;
         private static Sprite _uiSprite;
         private static Sprite _backgroundSprite;
         private static Sprite _inputFieldBackground;
@@ -298,6 +318,7 @@ namespace IcMusicPlayer.Editors
         private void Awake()
         {
             _material = _loadAsset<Material>(Uguiexdefaultmaterialpath_String);
+            _font = _loadAsset<Font>(UguiexDefaultFontPath);
             _isRayCastTarget = IsRayCastTarget;
             _isRich = IsRich;
         }
@@ -323,15 +344,10 @@ namespace IcMusicPlayer.Editors
             EditorGUILayout.Space();
             EditorGUILayoutUtil.DrawUILine(Color.cyan,width: position.width);
             EditorGUILayout.Space();
+
+            _drawSetField(ref _material, _selectDefaultMaterialLabel);
+            _drawSetField(ref _font, _selectDefaultFontlLabel);
             
-            EditorGUILayout.BeginHorizontal();
-            {
-                EditorGUILayout.LabelField(_selectDefaultMaterialLabel);
-
-                _material = (Material) EditorGUILayout.ObjectField(_material, typeof(Material), false);
-            }
-            EditorGUILayout.EndHorizontal();
-
             _spriteSet = EditorGUILayout.Foldout(_spriteSet, _spriteSetting,true);
             
             if (_spriteSet)
@@ -358,11 +374,23 @@ namespace IcMusicPlayer.Editors
             _isRich = EditorGUILayout.ToggleLeft(_isOpenRich, _isRich);
             
             _donotMaskToRMask = EditorGUILayout.ToggleLeft(_doNotMaskToRectMask, _donotMaskToRMask);
-            
+
+            _setDefaultFont();
             _setDefaultMaterial(_material);
             _setRayCastEnableState(_isRayCastTarget);
             _setRichEnableState(_isRich);
             Cfg.CSVEncrypting.SetValue(DoNotMaskToRectMask_Bool, _donotMaskToRMask);
+        }
+
+        void _drawSetField<T>(ref T obj,string label) where T : Object
+        {
+            EditorGUILayout.BeginHorizontal();
+            {
+                EditorGUILayout.LabelField(label);
+
+                obj = (T) EditorGUILayout.ObjectField(obj, typeof(T), false);
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
         private string _lastSelectPath;

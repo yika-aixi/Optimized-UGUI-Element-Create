@@ -115,6 +115,19 @@ namespace IcMusicPlayer.Editors
             Selection.activeGameObject = element;
         }
 
+        static void _textSetting(Text text,bool isRayCastTarget)
+        {
+            _graphicSetting(text, isRayCastTarget);
+            text.supportRichText = CustomizeUGUICreate.IsRich;
+            text.font = CustomizeUGUICreate.GetDefaultFont(text.gameObject) ? CustomizeUGUICreate.GetDefaultFont(text.gameObject) : text.font;
+        }
+
+        static void _graphicSetting(Graphic graphic,bool isRayCastTarget)
+        {
+            graphic.raycastTarget = isRayCastTarget;
+            graphic.material = CustomizeUGUICreate.GetDefaultMaterial(graphic.gameObject) ? CustomizeUGUICreate.GetDefaultMaterial(graphic.gameObject) : graphic.material;
+        }
+        
         // Graphic elements
 
         [MenuItem("GameObject/UI/New Text", false, -2000)]
@@ -122,9 +135,7 @@ namespace IcMusicPlayer.Editors
         {
             GameObject go = DefaultControls.CreateText(GetStandardResources());
             Text text = go.GetComponent<Text>();
-            text.supportRichText = CustomizeUGUICreate.IsRich;
-            text.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            text.material = CustomizeUGUICreate.GetDefalutMaterial(text.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(text.gameObject) : text.material;
+            _textSetting(text,CustomizeUGUICreate.IsRayCastTarget);
             PlaceUIElementRoot(go, menuCommand);
         }
 
@@ -134,7 +145,7 @@ namespace IcMusicPlayer.Editors
             GameObject go = DefaultControls.CreateImage(GetStandardResources());
             var image = go.GetComponent<Image>();
             image.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
+            image.material = CustomizeUGUICreate.GetDefaultMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefaultMaterial(image.gameObject) : image.material;
             PlaceUIElementRoot(go, menuCommand);
         }
 
@@ -143,8 +154,7 @@ namespace IcMusicPlayer.Editors
         {
             GameObject go = DefaultControls.CreateRawImage(GetStandardResources());
             var rawImage = go.GetComponent<RawImage>();
-            rawImage.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            rawImage.material = CustomizeUGUICreate.GetDefalutMaterial(rawImage.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(rawImage.gameObject) : rawImage.material;
+            _graphicSetting(rawImage, CustomizeUGUICreate.IsRayCastTarget);
             PlaceUIElementRoot(go, menuCommand);
         }
 
@@ -158,13 +168,10 @@ namespace IcMusicPlayer.Editors
             GameObject go = DefaultControls.CreateButton(GetStandardResources());
 
             var image = go.GetComponent<Image>();
-            image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
-
-            var text = go.transform.GetChild(0).GetComponent<Text>();
-            text.supportRichText = CustomizeUGUICreate.IsRich;
-            text.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            text.material = CustomizeUGUICreate.GetDefalutMaterial(text.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(text.gameObject) : text.material;
+            _graphicSetting(image, true);
             
+            var text = go.transform.GetChild(0).GetComponent<Text>();
+            _textSetting(text,CustomizeUGUICreate.IsRayCastTarget);
             PlaceUIElementRoot(go, menuCommand);
         }
 
@@ -175,17 +182,13 @@ namespace IcMusicPlayer.Editors
 
             var background = go.transform.Find("Background").GetComponent<Image>();
             background.type = Image.Type.Simple;
-            background.material = CustomizeUGUICreate.GetDefalutMaterial(background.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(background.gameObject) : background.material;
+            _graphicSetting(background, true);
 
             var checkmark = background.transform.Find("Checkmark").GetComponent<Image>();
-            
-            checkmark.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            checkmark.material = CustomizeUGUICreate.GetDefalutMaterial (checkmark.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(checkmark.gameObject) : checkmark.material;
-            
+            _graphicSetting(checkmark, CustomizeUGUICreate.IsRayCastTarget);
+
             var lable = go.transform.Find("Label").GetComponent<Text>();
-            lable.supportRichText = CustomizeUGUICreate.IsRich;
-            lable.material = CustomizeUGUICreate.GetDefalutMaterial(lable.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(lable.gameObject) : lable.material;
-            
+            _textSetting(lable,true);
             PlaceUIElementRoot(go, menuCommand);
         }
 
@@ -199,13 +202,11 @@ namespace IcMusicPlayer.Editors
             var Fill = go.transform.Find("Fill Area").GetChild(0).GetComponent<Image>();
             var Handle = go.transform.Find("Handle Slide Area").GetChild(0).GetComponent<Image>();
             
-            Background.material = CustomizeUGUICreate.GetDefalutMaterial(Background.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Background.gameObject) : Background.material;
-            Background.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            
-            Fill.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Fill.material = CustomizeUGUICreate.GetDefalutMaterial(Fill.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Fill.gameObject) : Fill.material;
-            
-            Handle.material = CustomizeUGUICreate.GetDefalutMaterial(Handle.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Handle.gameObject) : Handle.material;
+            _graphicSetting(Background, CustomizeUGUICreate.IsRayCastTarget);
+
+            _graphicSetting(Fill, CustomizeUGUICreate.IsRayCastTarget);
+
+            _graphicSetting(Handle, true);
             
             PlaceUIElementRoot(go, menuCommand);
         }
@@ -223,11 +224,10 @@ namespace IcMusicPlayer.Editors
         static void _setScrollbar(GameObject scrollbar)
         {
             var image = scrollbar.GetComponent<Image>();
-            image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
+            _graphicSetting(image, true);
 
             var handle = scrollbar.transform.Find("Sliding Area").GetChild(0).GetComponent<Image>();
-
-            handle.material = CustomizeUGUICreate.GetDefalutMaterial(handle.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(handle.gameObject) : handle.material;
+            _graphicSetting(handle, true);
         }
 
         // More advanced controls below
@@ -246,32 +246,17 @@ namespace IcMusicPlayer.Editors
             var Item_Background = Item.transform.Find("Item Background").GetComponent<Image>();
             var Item_Checkmark = Item.transform.Find("Item Checkmark").GetComponent<Image>();
             var Item_Label = Item.transform.Find("Item Label").GetComponent<Text>();
-            
-            Label.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Label.supportRichText = CustomizeUGUICreate.IsRich;
-            Label.material = CustomizeUGUICreate.GetDefalutMaterial(Item_Label.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Item_Label.gameObject) : Label.material;
-            
-            Item_Label.material = CustomizeUGUICreate.GetDefalutMaterial(Item_Label.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Item_Label.gameObject) : Item_Label.material;
-            Item_Label.supportRichText = CustomizeUGUICreate.IsRich;
-            
-            Arrow.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Arrow.material = CustomizeUGUICreate.GetDefalutMaterial(Arrow.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Arrow.gameObject) : Arrow.material;
-            
-            Template.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Template.material = CustomizeUGUICreate.GetDefalutMaterial(Template.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Template.gameObject) : Template.material;
-            
-            Viewport.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Viewport.material = CustomizeUGUICreate.GetDefalutMaterial(Viewport.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Viewport.gameObject) : Viewport.material;
-            
-            Item_Background.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Item_Background.material = CustomizeUGUICreate.GetDefalutMaterial(Item_Background.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Item_Background.gameObject) : Item_Background.material;
-            
-            Item_Checkmark.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Item_Checkmark.material = CustomizeUGUICreate.GetDefalutMaterial(Item_Checkmark.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Item_Checkmark.gameObject) : Item_Checkmark.material;
-            
             var goImage = go.GetComponent<Image>();
-
-            goImage.material = CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) : goImage.material;
+            
+            _textSetting(Label,CustomizeUGUICreate.IsRayCastTarget);
+            _textSetting(Item_Label,true);
+            _graphicSetting(Arrow, CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(Template, CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(Viewport, CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(Item_Background, CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(Item_Checkmark, CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(goImage, true);
+            
         }
 
         [MenuItem("GameObject/UI/New Input Field", false, -2036)]
@@ -281,18 +266,13 @@ namespace IcMusicPlayer.Editors
             PlaceUIElementRoot(go, menuCommand);
 
             var Placeholder = go.transform.Find("Placeholder").GetComponent<Text>();
-            Placeholder.supportRichText = CustomizeUGUICreate.IsRich;
-            Placeholder.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Placeholder.material = CustomizeUGUICreate.GetDefalutMaterial(Placeholder.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Placeholder.gameObject) : Placeholder.material;
+            _textSetting(Placeholder,CustomizeUGUICreate.IsRayCastTarget);
 
             var Text = go.transform.Find("Text").GetComponent<Text>();
-            Text.supportRichText = CustomizeUGUICreate.IsRich;
-            Text.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            Text.material = CustomizeUGUICreate.GetDefalutMaterial(Text.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(Text.gameObject): Text.material;
+            _textSetting(Text,CustomizeUGUICreate.IsRayCastTarget);
 
             var goImage = go.GetComponent<Image>();
-
-            goImage.material = CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject)? CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) : goImage.material;
+            _graphicSetting(goImage, true);
         }
 
         [MenuItem("GameObject/UI/New Panel", false, -2061)]
@@ -302,9 +282,8 @@ namespace IcMusicPlayer.Editors
             PlaceUIElementRoot(go, menuCommand);
 
             var image = go.GetComponent<Image>();
-            image.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            image.material = CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(image.gameObject) : image.material;
-            
+            _graphicSetting(image, CustomizeUGUICreate.IsRayCastTarget);
+
             // Panel is special, we need to ensure there's no padding after repositioning.
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition = Vector2.zero;
@@ -323,17 +302,7 @@ namespace IcMusicPlayer.Editors
             {
                 var viewportImage = viewport.GetComponent<Image>();
 
-                viewportImage.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-
-                Material material = CustomizeUGUICreate.GetDefalutMaterial(viewport.gameObject);
-
-                if (!material)
-                {
-                    material = viewportImage.material;
-                }
-
-                viewportImage.material = material;
-
+                _graphicSetting(viewportImage, CustomizeUGUICreate.IsRayCastTarget);
             }
             else
             {
@@ -341,12 +310,10 @@ namespace IcMusicPlayer.Editors
                 Object.DestroyImmediate(viewport.GetComponent<Mask>());
                 viewport.AddComponent<RectMask2D>();
             }
-
-
+            
             var goImage = go.GetComponent<Image>();
-
-            goImage.material = CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) ? CustomizeUGUICreate.GetDefalutMaterial(goImage.gameObject) : goImage.material;
-
+            _graphicSetting(goImage, true);
+            
             var Scrollbar_Horizontal = go.transform.Find("Scrollbar Horizontal").gameObject;
             var Scrollbar_Vertical = go.transform.Find("Scrollbar Vertical").gameObject;
             _setScrollbar(Scrollbar_Horizontal);
