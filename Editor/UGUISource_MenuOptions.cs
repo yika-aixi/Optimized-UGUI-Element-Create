@@ -298,15 +298,11 @@ namespace IcMusicPlayer.Editors
 
             var viewport = go.transform.Find("Viewport").gameObject;
 
-            if (CustomizeUGUICreate.NoToRectMask)
+            var viewportImage = viewport.GetComponent<Image>();
+            _graphicSetting(viewportImage, CustomizeUGUICreate.IsRayCastTarget);
+            
+            if (!CustomizeUGUICreate.NoToRectMask)
             {
-                var viewportImage = viewport.GetComponent<Image>();
-
-                _graphicSetting(viewportImage, CustomizeUGUICreate.IsRayCastTarget);
-            }
-            else
-            {
-                Object.DestroyImmediate(viewport.GetComponent<Image>());
                 Object.DestroyImmediate(viewport.GetComponent<Mask>());
                 viewport.AddComponent<RectMask2D>();
             }
