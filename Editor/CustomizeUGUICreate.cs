@@ -25,10 +25,12 @@ namespace IcMusicPlayer.Editors
         {
             EditorApplication.update += _loadLanguage;
         }
-
+        
         private static void _loadLanguage()
         {
-            LocalizationManager.Instance.LoadCsvLanguageConfig(PathUtil.GetDataPathCombinePath("Cabin Icarus/Optimized-UGUI-Element-Create/Localzation/Window")
+            var path = typeof(CustomizeUGUICreate).GetTypeProjectFolderPath(true);
+            
+            LocalizationManager.Instance.LoadCsvLanguageConfig(PathUtil.GetDataPathCombinePath($"{Path.GetDirectoryName(path)}/Localzation/Window")
                 ,1);
             
             EditorApplication.update -= _loadLanguage;
@@ -354,6 +356,7 @@ namespace IcMusicPlayer.Editors
             {
                 SpriteFieldSize = EditorGUILayout.Vector2Field("Size", SpriteFieldSize);
                 _sizeScale = EditorGUILayout.Slider("SizeScale", _sizeScale, 1, 3);
+
                 _spriteFieldPos = EditorGUILayout.BeginScrollView(_spriteFieldPos);
                 {
                     _spriteHandle("UISprite", UGUISource_MenuOptions.kStandardSpritePath, ref _uiSprite);
