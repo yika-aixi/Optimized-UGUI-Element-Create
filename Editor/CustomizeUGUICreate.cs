@@ -28,7 +28,7 @@ namespace IcMusicPlayer.Editors
         
         private static void _loadLanguage()
         {
-            var path = typeof(CustomizeUGUICreate).GetTypeProjectFolderPath(true);
+            var path = typeof(CustomizeUGUICreate).GetTypeProjectFolderPath(false);
             
             LocalizationManager.Instance.LoadCsvLanguageConfig(PathUtil.GetDataPathCombinePath($"{Path.GetDirectoryName(path)}/Localzation/Window")
                 ,1);
