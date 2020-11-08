@@ -95,9 +95,10 @@ namespace IcMusicPlayer.Editors
             itemTransform.localScale = Vector3.one;
         }
 
-        private static void PlaceUIElementRoot(GameObject element, MenuCommand menuCommand)
+        public static void PlaceUIElementRoot(GameObject element, GameObject parent)
         {
-            GameObject parent = menuCommand.context as GameObject;
+            GameObject argParent = parent;
+            
             if (parent == null || parent.GetComponentInParent<Canvas>() == null)
             {
                 parent = GetOrCreateCanvasGameObject();
@@ -105,14 +106,19 @@ namespace IcMusicPlayer.Editors
 
             string uniqueName = GameObjectUtility.GetUniqueNameForSibling(parent.transform, element.name);
             element.name = uniqueName;
-            Undo.RegisterCreatedObjectUndo(element, "Create " + element.name);
+            Undo.RegisterCreatedObjectUndo(element, "Create "                      + element.name);
             Undo.SetTransformParent(element.transform, parent.transform, "Parent " + element.name);
             GameObjectUtility.SetParentAndAlign(element, parent);
-            if (parent != menuCommand.context) // not a context click, so center in sceneview
+            if (parent != argParent) // not a context click, so center in sceneview
                 SetPositionVisibleinSceneView(parent.GetComponent<RectTransform>(),
                     element.GetComponent<RectTransform>());
 
             Selection.activeGameObject = element;
+        }
+        
+        private static void PlaceUIElementRoot(GameObject element, MenuCommand menuCommand)
+        {
+            PlaceUIElementRoot(element, menuCommand.context as GameObject);
         }
 
         static void _textSetting(Text text,bool isRayCastTarget)
