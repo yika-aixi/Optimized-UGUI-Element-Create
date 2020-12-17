@@ -25,15 +25,21 @@ namespace IcMusicPlayer.Editors
         {
             EditorApplication.update += _loadLanguage;
         }
-        
+
+        private static bool _load;
         private static void _loadLanguage()
         {
+            if (_load)
+            {
+                return;
+            }
+            
             var path = typeof(CustomizeUGUICreate).GetTypeProjectFolderPath(false);
             
             LocalizationManager.Instance.LoadCsvLanguageConfig(PathUtil.GetDataPathCombinePath($"{Path.GetDirectoryName(path)}/Localzation/Window")
                 ,1);
-            
-            EditorApplication.update -= _loadLanguage;
+
+            _load = true;
         }
     }
     
