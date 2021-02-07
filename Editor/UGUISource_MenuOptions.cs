@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace IcMusicPlayer.Editors
+namespace CabinIcarus.UGUI.OptimizedElement
 {
     //name: MenuOptions
     public class UGUISource_MenuOptions

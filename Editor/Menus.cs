@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace IcMusicPlayer.Editors
+namespace CabinIcarus.UGUI.OptimizedElement
 {
     public static class Menus
     {

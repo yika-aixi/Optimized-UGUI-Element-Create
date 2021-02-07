@@ -16,7 +16,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace IcMusicPlayer.Editors
+namespace CabinIcarus.UGUI.OptimizedElement
 {
     [InitializeOnRun(-1)]
     static class Init
