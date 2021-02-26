@@ -1,3 +1,4 @@
+#if PACKAGE_UGUI
 //创建者:Icarus
 //手动滑稽,滑稽脸
 //ヾ(•ω•`)o
@@ -17,13 +18,13 @@ namespace CabinIcarus.UGUI.OptimizedElement
     {
         private const string kUILayerName = "UI";
 
-        internal const string kStandardSpritePath = "UI/Skin/UISprite.psd";
-        internal const string kBackgroundSpritePath = "UI/Skin/Background.psd";
+        internal const string kStandardSpritePath       = "UI/Skin/UISprite.psd";
+        internal const string kBackgroundSpritePath     = "UI/Skin/Background.psd";
         internal const string kInputFieldBackgroundPath = "UI/Skin/InputFieldBackground.psd";
-        internal const string kKnobPath = "UI/Skin/Knob.psd";
-        internal const string kCheckmarkPath = "UI/Skin/Checkmark.psd";
-        internal const string kDropdownArrowPath = "UI/Skin/DropdownArrow.psd";
-        internal const string kMaskPath = "UI/Skin/UIMask.psd";
+        internal const string kKnobPath                 = "UI/Skin/Knob.psd";
+        internal const string kCheckmarkPath            = "UI/Skin/Checkmark.psd";
+        internal const string kDropdownArrowPath        = "UI/Skin/DropdownArrow.psd";
+        internal const string kMaskPath                 = "UI/Skin/UIMask.psd";
 
 #if UNITY_5_3_OR_NEWER
         static private DefaultControls.Resources s_StandardResources;
@@ -32,13 +33,13 @@ namespace CabinIcarus.UGUI.OptimizedElement
         {
             if (s_StandardResources.standard == null)
             {
-                s_StandardResources.standard = CustomizeUGUICreate.UiSprite;
+                s_StandardResources.standard   = CustomizeUGUICreate.UiSprite;
                 s_StandardResources.background = CustomizeUGUICreate.BackgroundSprite;
                 s_StandardResources.inputField = CustomizeUGUICreate.InputFieldBackground;
-                s_StandardResources.knob = CustomizeUGUICreate.Knob;
-                s_StandardResources.checkmark = CustomizeUGUICreate.Checkmark;
-                s_StandardResources.dropdown = CustomizeUGUICreate.DropdownArrow;
-                s_StandardResources.mask = CustomizeUGUICreate.UIMask;
+                s_StandardResources.knob       = CustomizeUGUICreate.Knob;
+                s_StandardResources.checkmark  = CustomizeUGUICreate.Checkmark;
+                s_StandardResources.dropdown   = CustomizeUGUICreate.DropdownArrow;
+                s_StandardResources.mask       = CustomizeUGUICreate.UIMask;
             }
 
             return s_StandardResources;
@@ -58,7 +59,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
 
             // Create world space Plane from canvas position.
             Vector2 localPlanePosition;
-            Camera camera = sceneView.camera;
+            Camera  camera   = sceneView.camera;
             Vector3 position = Vector3.zero;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRTransform,
                 new Vector2(camera.pixelWidth / 2, camera.pixelHeight / 2), camera, out localPlanePosition))
@@ -76,23 +77,23 @@ namespace CabinIcarus.UGUI.OptimizedElement
 
                 Vector3 minLocalPosition;
                 minLocalPosition.x = canvasRTransform.sizeDelta.x * (0 - canvasRTransform.pivot.x) +
-                                     itemTransform.sizeDelta.x * itemTransform.pivot.x;
+                                     itemTransform.sizeDelta.x    * itemTransform.pivot.x;
                 minLocalPosition.y = canvasRTransform.sizeDelta.y * (0 - canvasRTransform.pivot.y) +
-                                     itemTransform.sizeDelta.y * itemTransform.pivot.y;
+                                     itemTransform.sizeDelta.y    * itemTransform.pivot.y;
 
                 Vector3 maxLocalPosition;
                 maxLocalPosition.x = canvasRTransform.sizeDelta.x * (1 - canvasRTransform.pivot.x) -
-                                     itemTransform.sizeDelta.x * itemTransform.pivot.x;
+                                     itemTransform.sizeDelta.x    * itemTransform.pivot.x;
                 maxLocalPosition.y = canvasRTransform.sizeDelta.y * (1 - canvasRTransform.pivot.y) -
-                                     itemTransform.sizeDelta.y * itemTransform.pivot.y;
+                                     itemTransform.sizeDelta.y    * itemTransform.pivot.y;
 
                 position.x = Mathf.Clamp(position.x, minLocalPosition.x, maxLocalPosition.x);
                 position.y = Mathf.Clamp(position.y, minLocalPosition.y, maxLocalPosition.y);
             }
 
             itemTransform.anchoredPosition = position;
-            itemTransform.localRotation = Quaternion.identity;
-            itemTransform.localScale = Vector3.one;
+            itemTransform.localRotation    = Quaternion.identity;
+            itemTransform.localScale       = Vector3.one;
         }
 
         public static void PlaceUIElementRoot(GameObject element, GameObject parent)
@@ -121,17 +122,17 @@ namespace CabinIcarus.UGUI.OptimizedElement
             PlaceUIElementRoot(element, menuCommand.context as GameObject);
         }
 
-        static void _textSetting(Text text,bool isRayCastTarget)
+        static void _textSetting(Text text, bool isRayCastTarget)
         {
             _graphicSetting(text, isRayCastTarget);
             text.supportRichText = CustomizeUGUICreate.IsRich;
-            text.font = CustomizeUGUICreate.GetDefaultFont(text.gameObject) ? CustomizeUGUICreate.GetDefaultFont(text.gameObject) : text.font;
+            text.font            = CustomizeUGUICreate.GetDefaultFont(text.gameObject) ? CustomizeUGUICreate.GetDefaultFont(text.gameObject) : text.font;
         }
 
-        static void _graphicSetting(Graphic graphic,bool isRayCastTarget)
+        static void _graphicSetting(Graphic graphic, bool isRayCastTarget)
         {
             graphic.raycastTarget = isRayCastTarget;
-            graphic.material = CustomizeUGUICreate.GetDefaultMaterial(graphic.gameObject) ? CustomizeUGUICreate.GetDefaultMaterial(graphic.gameObject) : graphic.material;
+            graphic.material      = CustomizeUGUICreate.GetDefaultMaterial(graphic.gameObject) ? CustomizeUGUICreate.GetDefaultMaterial(graphic.gameObject) : graphic.material;
         }
         
         // Graphic elements
@@ -139,27 +140,27 @@ namespace CabinIcarus.UGUI.OptimizedElement
         [MenuItem("GameObject/UI/New Text", false, -2000)]
         static public void AddText(MenuCommand menuCommand)
         {
-            GameObject go = DefaultControls.CreateText(GetStandardResources());
-            Text text = go.GetComponent<Text>();
-            _textSetting(text,CustomizeUGUICreate.IsRayCastTarget);
+            GameObject go   = DefaultControls.CreateText(GetStandardResources());
+            Text       text = go.GetComponent<Text>();
+            _textSetting(text, CustomizeUGUICreate.IsRayCastTarget);
             PlaceUIElementRoot(go, menuCommand);
         }
 
         [MenuItem("GameObject/UI/New Image", false, -2001)]
         static public void AddImage(MenuCommand menuCommand)
         {
-            GameObject go = DefaultControls.CreateImage(GetStandardResources());
-            var image = go.GetComponent<Image>();
+            GameObject go    = DefaultControls.CreateImage(GetStandardResources());
+            var        image = go.GetComponent<Image>();
             image.raycastTarget = CustomizeUGUICreate.IsRayCastTarget;
-            image.material = CustomizeUGUICreate.GetDefaultMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefaultMaterial(image.gameObject) : image.material;
+            image.material      = CustomizeUGUICreate.GetDefaultMaterial(image.gameObject) ? CustomizeUGUICreate.GetDefaultMaterial(image.gameObject) : image.material;
             PlaceUIElementRoot(go, menuCommand);
         }
 
         [MenuItem("GameObject/UI/New Raw Image", false, -2002)]
         static public void AddRawImage(MenuCommand menuCommand)
         {
-            GameObject go = DefaultControls.CreateRawImage(GetStandardResources());
-            var rawImage = go.GetComponent<RawImage>();
+            GameObject go       = DefaultControls.CreateRawImage(GetStandardResources());
+            var        rawImage = go.GetComponent<RawImage>();
             _graphicSetting(rawImage, CustomizeUGUICreate.IsRayCastTarget);
             PlaceUIElementRoot(go, menuCommand);
         }
@@ -177,7 +178,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             _graphicSetting(image, true);
             
             var text = go.transform.GetChild(0).GetComponent<Text>();
-            _textSetting(text,CustomizeUGUICreate.IsRayCastTarget);
+            _textSetting(text, CustomizeUGUICreate.IsRayCastTarget);
             PlaceUIElementRoot(go, menuCommand);
         }
 
@@ -194,7 +195,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             _graphicSetting(checkmark, CustomizeUGUICreate.IsRayCastTarget);
 
             var lable = go.transform.Find("Label").GetComponent<Text>();
-            _textSetting(lable,true);
+            _textSetting(lable, true);
             PlaceUIElementRoot(go, menuCommand);
         }
 
@@ -203,10 +204,10 @@ namespace CabinIcarus.UGUI.OptimizedElement
         [MenuItem("GameObject/UI/New Slider", false, -2033)]
         static public void AddSlider(MenuCommand menuCommand)
         {
-            GameObject go = DefaultControls.CreateSlider(GetStandardResources());
-            var Background = go.transform.Find("Background").GetComponent<Image>();
-            var Fill = go.transform.Find("Fill Area").GetChild(0).GetComponent<Image>();
-            var Handle = go.transform.Find("Handle Slide Area").GetChild(0).GetComponent<Image>();
+            GameObject go         = DefaultControls.CreateSlider(GetStandardResources());
+            var        Background = go.transform.Find("Background").GetComponent<Image>();
+            var        Fill       = go.transform.Find("Fill Area").GetChild(0).GetComponent<Image>();
+            var        Handle     = go.transform.Find("Handle Slide Area").GetChild(0).GetComponent<Image>();
             
             _graphicSetting(Background, CustomizeUGUICreate.IsRayCastTarget);
 
@@ -244,24 +245,24 @@ namespace CabinIcarus.UGUI.OptimizedElement
             GameObject go = DefaultControls.CreateDropdown(GetStandardResources());
             PlaceUIElementRoot(go, menuCommand);
 
-            var Label = go.transform.Find("Label").GetComponent<Text>();
-            var Arrow = go.transform.Find("Arrow").GetComponent<Image>();
-            var Template = go.transform.Find("Template").GetComponent<Image>();
-            var Viewport = Template.transform.Find("Viewport").GetComponent<Image>();
-            var Item = Viewport.transform.Find("Content").transform.Find("Item").GetComponent<Toggle>();
+            var Label           = go.transform.Find("Label").GetComponent<Text>();
+            var Arrow           = go.transform.Find("Arrow").GetComponent<Image>();
+            var Template        = go.transform.Find("Template").GetComponent<Image>();
+            var Viewport        = Template.transform.Find("Viewport").GetComponent<Image>();
+            var Item            = Viewport.transform.Find("Content").transform.Find("Item").GetComponent<Toggle>();
             var Item_Background = Item.transform.Find("Item Background").GetComponent<Image>();
-            var Item_Checkmark = Item.transform.Find("Item Checkmark").GetComponent<Image>();
-            var Item_Label = Item.transform.Find("Item Label").GetComponent<Text>();
-            var goImage = go.GetComponent<Image>();
+            var Item_Checkmark  = Item.transform.Find("Item Checkmark").GetComponent<Image>();
+            var Item_Label      = Item.transform.Find("Item Label").GetComponent<Text>();
+            var goImage         = go.GetComponent<Image>();
             
-            _textSetting(Label,CustomizeUGUICreate.IsRayCastTarget);
-            _textSetting(Item_Label,true);
-            _graphicSetting(Arrow, CustomizeUGUICreate.IsRayCastTarget);
-            _graphicSetting(Template, CustomizeUGUICreate.IsRayCastTarget);
-            _graphicSetting(Viewport, CustomizeUGUICreate.IsRayCastTarget);
+            _textSetting(Label,      CustomizeUGUICreate.IsRayCastTarget);
+            _textSetting(Item_Label, true);
+            _graphicSetting(Arrow,           CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(Template,        CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(Viewport,        CustomizeUGUICreate.IsRayCastTarget);
             _graphicSetting(Item_Background, CustomizeUGUICreate.IsRayCastTarget);
-            _graphicSetting(Item_Checkmark, CustomizeUGUICreate.IsRayCastTarget);
-            _graphicSetting(goImage, true);
+            _graphicSetting(Item_Checkmark,  CustomizeUGUICreate.IsRayCastTarget);
+            _graphicSetting(goImage,         true);
             
         }
 
@@ -272,10 +273,10 @@ namespace CabinIcarus.UGUI.OptimizedElement
             PlaceUIElementRoot(go, menuCommand);
 
             var Placeholder = go.transform.Find("Placeholder").GetComponent<Text>();
-            _textSetting(Placeholder,CustomizeUGUICreate.IsRayCastTarget);
+            _textSetting(Placeholder, CustomizeUGUICreate.IsRayCastTarget);
 
             var Text = go.transform.Find("Text").GetComponent<Text>();
-            _textSetting(Text,CustomizeUGUICreate.IsRayCastTarget);
+            _textSetting(Text, CustomizeUGUICreate.IsRayCastTarget);
 
             var goImage = go.GetComponent<Image>();
             _graphicSetting(goImage, true);
@@ -293,7 +294,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             // Panel is special, we need to ensure there's no padding after repositioning.
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition = Vector2.zero;
-            rect.sizeDelta = Vector2.zero;
+            rect.sizeDelta        = Vector2.zero;
         }
 
         [MenuItem("GameObject/UI/New Scroll View", false, -2062)]
@@ -317,7 +318,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             _graphicSetting(goImage, true);
             
             var Scrollbar_Horizontal = go.transform.Find("Scrollbar Horizontal").gameObject;
-            var Scrollbar_Vertical = go.transform.Find("Scrollbar Vertical").gameObject;
+            var Scrollbar_Vertical   = go.transform.Find("Scrollbar Vertical").gameObject;
             _setScrollbar(Scrollbar_Horizontal);
             _setScrollbar(Scrollbar_Vertical);
         }
@@ -380,7 +381,8 @@ namespace CabinIcarus.UGUI.OptimizedElement
                 return canvas.gameObject;
 
             // No canvas in the scene at all? Then create a new one.
-            return UGUISource_MenuOptions.CreateNewUI();
+            return CreateNewUI();
         }
     }
 }
+#endif

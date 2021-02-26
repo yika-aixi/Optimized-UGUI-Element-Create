@@ -1,3 +1,4 @@
+#if PACKAGE_UGUI
 //Create: Icarus
 //ヾ(•ω•`)o
 //2020-12-17 05:54
@@ -78,3 +79,4 @@ namespace CabinIcarus.UGUI.OptimizedElement
         }
     }
 }
+#endif

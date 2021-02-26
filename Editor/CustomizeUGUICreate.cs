@@ -1,3 +1,4 @@
+#if PACKAGE_UGUI
 //创建者:Icarus
 //手动滑稽,滑稽脸
 //ヾ(•ω•`)o
@@ -80,32 +81,32 @@ namespace CabinIcarus.UGUI.OptimizedElement
         public const string UguiexDefaultFontPath = "UguiexDefaultFontPath";
 
         #region Language Var
-        private static string _notFindMaterial  => LocalizationManager.Instance.GetValue("NotFindMaterial",out  _);
-        private static string _notFindFont  => LocalizationManager.Instance.GetValue("NotFindFont",out  _);
-        private static string _titile => LocalizationManager.Instance.GetValue("OptimizedElementSettingWindowTitle",out  _);
-        private static string _selectDefaultMaterialLabel  => LocalizationManager.Instance.GetValue("SetDefaultMaterial",out  _);
-        private static string _selectDefaultFontlLabel  => LocalizationManager.Instance.GetValue("SetDefaultFont",out  _);
-        private static string _selectDefaultSpriteLabel => LocalizationManager.Instance.GetValue("SetDefaultSprite",out  _);
-        private static string _isRayCastTargetLabel => LocalizationManager.Instance.GetValue("OpenRayCastTarget",out  _);
-        private static string _isOpenRich => LocalizationManager.Instance.GetValue("OpenRich",out  _);
-        private static string _optimizeWarning => LocalizationManager.Instance.GetValue("OptimizeWarning",out  _);
-        private static string _notFindAssetError => LocalizationManager.Instance.GetValue("NotFindAsset",out  _);
-        private static string _doNotMaskToRectMask => LocalizationManager.Instance.GetValue("DoNotMaskToRectMask",out  _);
+        private static string _notFindMaterial            => LocalizationManager.Instance.GetValue("NotFindMaterial",                    out  _);
+        private static string _notFindFont                => LocalizationManager.Instance.GetValue("NotFindFont",                        out  _);
+        private static string _titile                     => LocalizationManager.Instance.GetValue("OptimizedElementSettingWindowTitle", out  _);
+        private static string _selectDefaultMaterialLabel => LocalizationManager.Instance.GetValue("SetDefaultMaterial",                 out  _);
+        private static string _selectDefaultFontlLabel    => LocalizationManager.Instance.GetValue("SetDefaultFont",                     out  _);
+        private static string _selectDefaultSpriteLabel   => LocalizationManager.Instance.GetValue("SetDefaultSprite",                   out  _);
+        private static string _isRayCastTargetLabel       => LocalizationManager.Instance.GetValue("OpenRayCastTarget",                  out  _);
+        private static string _isOpenRich                 => LocalizationManager.Instance.GetValue("OpenRich",                           out  _);
+        private static string _optimizeWarning            => LocalizationManager.Instance.GetValue("OptimizeWarning",                    out  _);
+        private static string _notFindAssetError          => LocalizationManager.Instance.GetValue("NotFindAsset",                       out  _);
+        private static string _doNotMaskToRectMask        => LocalizationManager.Instance.GetValue("DoNotMaskToRectMask",                out  _);
         
-        private static string _spriteSetting => LocalizationManager.Instance.GetValue("SpriteSetting","Sprite Setting");
+        private static string _spriteSetting => LocalizationManager.Instance.GetValue("SpriteSetting", "Sprite Setting");
         #endregion
 
         public static Font GetDefaultFont(GameObject go)
         {
-            return _loadAsset<Font>(UguiexDefaultFontPath, _notFindFont,go);
+            return _loadAsset<Font>(UguiexDefaultFontPath, _notFindFont, go);
         }
         
         public static Material GetDefaultMaterial(GameObject go)
         {
-            return _loadAsset<Material>(Uguiexdefaultmaterialpath_String, _notFindMaterial,go);
+            return _loadAsset<Material>(Uguiexdefaultmaterialpath_String, _notFindMaterial, go);
         }
 
-        private static T _loadAsset<T>(string key, string errorMessage = null,GameObject go = null) where T : Object
+        private static T _loadAsset<T>(string key, string errorMessage = null, GameObject go = null) where T : Object
         {
             var path = Cfg.CSVEncrypting.GetValue<string>(key);
 
@@ -116,12 +117,12 @@ namespace CabinIcarus.UGUI.OptimizedElement
                 if (string.IsNullOrEmpty(path))
                 {
                     if(typeof(T) == typeof(Material))
-                        Debug.LogWarningFormat(_optimizeWarning,typeof(T).Name,go);   
+                        Debug.LogWarningFormat(_optimizeWarning, typeof(T).Name, go);   
                 }
                 
                 if (!string.IsNullOrEmpty(errorMessage) && !string.IsNullOrEmpty(path))
                 {
-                    Debug.LogErrorFormat(_notFindAssetError,errorMessage,path);
+                    Debug.LogErrorFormat(_notFindAssetError, errorMessage, path);
                 }
             }
 
@@ -139,7 +140,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             return $"{Uguiexdefaultspritepath_String}_{name}";
         }
 
-        private static Sprite _getSprite(Sprite sprite, string name,string builtinExtraResourcePath)
+        private static Sprite _getSprite(Sprite sprite, string name, string builtinExtraResourcePath)
         {
             if (!sprite)
             {
@@ -162,7 +163,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             {
                 if (!_uiSprite)
                 {
-                    _uiSprite = _getSprite(_uiSprite,"UISprite",UGUISource_MenuOptions.kStandardSpritePath);
+                    _uiSprite = _getSprite(_uiSprite, "UISprite", UGUISource_MenuOptions.kStandardSpritePath);
                 }
 
                 return _uiSprite;
@@ -175,7 +176,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             {
                 if (!_backgroundSprite)
                 {
-                    _backgroundSprite = _getSprite(_backgroundSprite,"Background",UGUISource_MenuOptions.kBackgroundSpritePath);
+                    _backgroundSprite = _getSprite(_backgroundSprite, "Background", UGUISource_MenuOptions.kBackgroundSpritePath);
                 }
 
                 return _backgroundSprite;
@@ -188,7 +189,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             {
                 if (!_inputFieldBackground)
                 {
-                    _inputFieldBackground = _getSprite(_inputFieldBackground,"InputFieldBackground",UGUISource_MenuOptions.kInputFieldBackgroundPath);
+                    _inputFieldBackground = _getSprite(_inputFieldBackground, "InputFieldBackground", UGUISource_MenuOptions.kInputFieldBackgroundPath);
                 }
                 
                 return _inputFieldBackground;
@@ -201,7 +202,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             {
                 if (!_knob)
                 {
-                    _knob = _getSprite(_knob,"Knob",UGUISource_MenuOptions.kKnobPath);
+                    _knob = _getSprite(_knob, "Knob", UGUISource_MenuOptions.kKnobPath);
                 }
 
                 return _knob;
@@ -214,7 +215,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             {
                 if (!_checkmark)
                 {
-                    _checkmark = _getSprite(_checkmark,"Checkmark",UGUISource_MenuOptions.kCheckmarkPath);
+                    _checkmark = _getSprite(_checkmark, "Checkmark", UGUISource_MenuOptions.kCheckmarkPath);
                 }
                 
                 return _checkmark;
@@ -227,7 +228,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             {
                 if (!_dropdownArrow)
                 {
-                    _dropdownArrow = _getSprite(_dropdownArrow,"DropdownArrowPath",UGUISource_MenuOptions.kDropdownArrowPath);
+                    _dropdownArrow = _getSprite(_dropdownArrow, "DropdownArrowPath", UGUISource_MenuOptions.kDropdownArrowPath);
                 }
                 
                 return _dropdownArrow;
@@ -240,7 +241,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             {
                 if (!_uIMask)
                 {
-                    _uIMask = _getSprite(_uIMask,"MaskPath",UGUISource_MenuOptions.kMaskPath);
+                    _uIMask = _getSprite(_uIMask, "MaskPath", UGUISource_MenuOptions.kMaskPath);
                 }
                 
                 return _uIMask;
@@ -249,8 +250,8 @@ namespace CabinIcarus.UGUI.OptimizedElement
 
         #endregion
 
-        private Vector2 _minSize = new Vector2(50,50);
-        private float _sizeScale;
+        private Vector2 _minSize = new Vector2(50, 50);
+        private float   _sizeScale;
         public Vector2 SpriteFieldSize
         {
             get => _spriteFieldSize;
@@ -264,7 +265,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             }
         }
 
-        [MenuItem("Icarus/UGUI/Optimized Element Setting",false,33)]
+        [MenuItem("Icarus/UGUI/Optimized Element Setting", false, 33)]
         static void _uGUISetting()
         {
             var win = GetWindow<CustomizeUGUICreate>(true, _titile);
@@ -282,7 +283,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             _saveObjectPathToCfg(material, Uguiexdefaultmaterialpath_String);
         }
 
-        static void _setDefaultSprite(Sprite sprite,string key)
+        static void _setDefaultSprite(Sprite sprite, string key)
         {
             _saveObjectPathToCfg(sprite, _getSpriteKey(key));
         }
@@ -309,26 +310,26 @@ namespace CabinIcarus.UGUI.OptimizedElement
             Cfg.CSVEncrypting.SetValue(Uguiexisrich_Bool, enable);
         }
 
-        private Material _material;
-        private Font _font;
-        private static Sprite _uiSprite;
-        private static Sprite _backgroundSprite;
-        private static Sprite _inputFieldBackground;
-        private static Sprite _knob;
-        private static Sprite _checkmark;
-        private static Sprite _dropdownArrow;
-        private static Sprite _uIMask;
+        private        Material _material;
+        private        Font     _font;
+        private static Sprite   _uiSprite;
+        private static Sprite   _backgroundSprite;
+        private static Sprite   _inputFieldBackground;
+        private static Sprite   _knob;
+        private static Sprite   _checkmark;
+        private static Sprite   _dropdownArrow;
+        private static Sprite   _uIMask;
         
-        private bool _isRayCastTarget,_isRich,_donotMaskToRMask;
+        private bool _isRayCastTarget, _isRich, _donotMaskToRMask;
 
         private bool _spriteSet;
 
         private void Awake()
         {
-            _material = _loadAsset<Material>(Uguiexdefaultmaterialpath_String);
-            _font = _loadAsset<Font>(UguiexDefaultFontPath);
+            _material        = _loadAsset<Material>(Uguiexdefaultmaterialpath_String);
+            _font            = _loadAsset<Font>(UguiexDefaultFontPath);
             _isRayCastTarget = IsRayCastTarget;
-            _isRich = IsRich;
+            _isRich          = IsRich;
         }
 
         protected override void On_Enable()
@@ -350,18 +351,18 @@ namespace CabinIcarus.UGUI.OptimizedElement
             DrawLocalizationSelect();
             
             EditorGUILayout.Space();
-            EditorGUILayoutUtil.DrawUILine(Color.cyan,width: position.width);
+            EditorGUILayoutUtil.DrawUILine(Color.cyan, width: position.width);
             EditorGUILayout.Space();
 
             _drawSetField(ref _material, _selectDefaultMaterialLabel);
-            _drawSetField(ref _font, _selectDefaultFontlLabel);
+            _drawSetField(ref _font,     _selectDefaultFontlLabel);
             
-            _spriteSet = EditorGUILayout.Foldout(_spriteSet, _spriteSetting,true);
+            _spriteSet = EditorGUILayout.Foldout(_spriteSet, _spriteSetting, true);
             
             if (_spriteSet)
             {
                 SpriteFieldSize = EditorGUILayout.Vector2Field("Size", SpriteFieldSize);
-                _sizeScale = EditorGUILayout.Slider("SizeScale", _sizeScale, 1, 3);
+                _sizeScale      = EditorGUILayout.Slider("SizeScale", _sizeScale, 1, 3);
 
                 _spriteFieldPos = EditorGUILayout.BeginScrollView(_spriteFieldPos);
                 {
@@ -370,10 +371,10 @@ namespace CabinIcarus.UGUI.OptimizedElement
                         ref _backgroundSprite);
                     _spriteHandle("InputFieldBackground", UGUISource_MenuOptions.kInputFieldBackgroundPath,
                         ref _inputFieldBackground);
-                    _spriteHandle("Knob", UGUISource_MenuOptions.kKnobPath, ref _knob);
-                    _spriteHandle("Checkmark", UGUISource_MenuOptions.kCheckmarkPath, ref _checkmark);
+                    _spriteHandle("Knob",          UGUISource_MenuOptions.kKnobPath,          ref _knob);
+                    _spriteHandle("Checkmark",     UGUISource_MenuOptions.kCheckmarkPath,     ref _checkmark);
                     _spriteHandle("DropdownArrow", UGUISource_MenuOptions.kDropdownArrowPath, ref _dropdownArrow);
-                    _spriteHandle("UIMask", UGUISource_MenuOptions.kMaskPath, ref _uIMask);
+                    _spriteHandle("UIMask",        UGUISource_MenuOptions.kMaskPath,          ref _uIMask);
                 }
                 EditorGUILayout.EndScrollView();
             }
@@ -391,7 +392,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             Cfg.CSVEncrypting.SetValue(DoNotMaskToRectMask_Bool, _donotMaskToRMask);
         }
 
-        void _drawSetField<T>(ref T obj,string label) where T : Object
+        void _drawSetField<T>(ref T obj, string label) where T : Object
         {
             EditorGUILayout.BeginHorizontal();
             {
@@ -404,7 +405,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
 
         private string _lastSelectPath;
         
-        private void _spriteHandle(string title, string builtinExtraResourcePath,ref Sprite cache)
+        private void _spriteHandle(string title, string builtinExtraResourcePath, ref Sprite cache)
         {
             if (string.IsNullOrWhiteSpace(_lastSelectPath))
             {
@@ -413,7 +414,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
             
             EditorGUILayout.BeginHorizontal("box");
             {
-                EditorGUILayout.LabelField(_selectDefaultSpriteLabel,title);
+                EditorGUILayout.LabelField(_selectDefaultSpriteLabel, title);
 
                 Sprite builtinExtraResource = AssetDatabase.GetBuiltinExtraResource<Sprite>(builtinExtraResourcePath);
 
@@ -421,11 +422,11 @@ namespace CabinIcarus.UGUI.OptimizedElement
                 {
                     GUI.enabled = false;
                     {
-                        EditorGUILayout.ObjectField(builtinExtraResource, typeof(Sprite), false,GUILayout.Width(SpriteFieldSize.x * _sizeScale),GUILayout.Height(SpriteFieldSize.y * _sizeScale));
+                        EditorGUILayout.ObjectField(builtinExtraResource, typeof(Sprite), false, GUILayout.Width(SpriteFieldSize.x * _sizeScale), GUILayout.Height(SpriteFieldSize.y * _sizeScale));
                     }
                     GUI.enabled = true;
 
-                    if (GUILayout.Button("Export",GUILayout.Width(SpriteFieldSize.x * _sizeScale)))
+                    if (GUILayout.Button("Export", GUILayout.Width(SpriteFieldSize.x * _sizeScale)))
                     {
                         var temp = builtinExtraResource.texture.ToWritableAndRead();
 
@@ -436,12 +437,12 @@ namespace CabinIcarus.UGUI.OptimizedElement
                         if (!string.IsNullOrWhiteSpace(path))
                         {
                             _lastSelectPath = path;
-                            path = PathUtil.GetCombinePath(path, $"{builtinExtraResource.name}.png");
-                            File.WriteAllBytes(path,png);
+                            path            = PathUtil.GetCombinePath(path, $"{builtinExtraResource.name}.png");
+                            File.WriteAllBytes(path, png);
                             AssetDatabase.Refresh();
                             
                             var ass = (TextureImporter) AssetUtil.SelectAsset(path);
-                            ass.isReadable = true;
+                            ass.isReadable  = true;
                             ass.textureType = TextureImporterType.Sprite;
 
                             bool isMulti = builtinExtraResource.rect.position.sqrMagnitude > 0;
@@ -451,7 +452,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
                             if (!isMulti)
                             {
                                 ass.spriteBorder = builtinExtraResource.border;
-                                ass.spritePivot = builtinExtraResource.pivot;
+                                ass.spritePivot  = builtinExtraResource.pivot;
                             }
                             else
                             {
@@ -460,10 +461,10 @@ namespace CabinIcarus.UGUI.OptimizedElement
                                     new SpriteMetaData
                                     {
                                         alignment = 9,
-                                        border = builtinExtraResource.border,
-                                        pivot = builtinExtraResource.pivot,
-                                        rect = builtinExtraResource.rect,
-                                        name = builtinExtraResource.name
+                                        border    = builtinExtraResource.border,
+                                        pivot     = builtinExtraResource.pivot,
+                                        rect      = builtinExtraResource.rect,
+                                        name      = builtinExtraResource.name
                                     }, 
                                 };
                             }
@@ -472,7 +473,7 @@ namespace CabinIcarus.UGUI.OptimizedElement
                             AssetDatabase.Refresh();                      
                             var objects = AssetDatabase.LoadAllAssetsAtPath(ass.assetPath);
                             cache = (Sprite) objects[1];
-                            _setDefaultSprite(cache,title);
+                            _setDefaultSprite(cache, title);
                             Repaint();
                             return;
                         }
@@ -481,10 +482,10 @@ namespace CabinIcarus.UGUI.OptimizedElement
                 EditorGUILayout.EndVertical();
                 
                 EditorGUI.BeginChangeCheck();
-                cache =(Sprite) EditorGUILayout.ObjectField(cache, typeof(Sprite), false,GUILayout.Width(SpriteFieldSize.x * _sizeScale),GUILayout.Height(SpriteFieldSize.y * _sizeScale));
+                cache = (Sprite) EditorGUILayout.ObjectField(cache, typeof(Sprite), false, GUILayout.Width(SpriteFieldSize.x * _sizeScale), GUILayout.Height(SpriteFieldSize.y * _sizeScale));
                 if (EditorGUI.EndChangeCheck())
                 {
-                    _setDefaultSprite(cache,title);
+                    _setDefaultSprite(cache, title);
                     
                     if (!cache)
                     {
@@ -497,3 +498,4 @@ namespace CabinIcarus.UGUI.OptimizedElement
         }
     }
 }
+#endif
